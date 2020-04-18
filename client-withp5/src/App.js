@@ -3,6 +3,7 @@ import Sketch from "react-p5";
 import * as ml5 from 'ml5'
 import collideCircle from './helpers/collideCircle'
 import Fruit from './objects/fruit'
+import Bomb from './objects/bomb'
 import { createHandKeypoint } from './helpers/extend'
 
 function App() {
@@ -14,11 +15,14 @@ function App() {
   // let calibrate_left = false;
   // let calibrate_right = false;
   let fruits = []
+  let bombs = []
   let score = 0
+  let Hp = 10
   // let handKeypoints
 
   function preload(p5){
     fruit_png = p5.loadImage("https://cdn4.iconfinder.com/data/icons/slot-machines/512/Grapes-512.png")
+    bomb_png = p5.loadImage("https://www.pinclipart.com/picdir/big/108-1086850_fused-bomb-emblem-bo-ww2-clipart-bomb-png.png")
   }
 
   function setup(p5, parent) {
