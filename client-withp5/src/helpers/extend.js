@@ -74,7 +74,7 @@ export const createHandKeypoint = (keypoints) => {
       x: leftWrist.x + xDistanceLeftDown,
       y: leftWrist.y + yDistanceLeftDown,
     };
-  } else if (leftArmDistance.xDiff <= 0 && leftArmDistance.ydiff < 0) {
+  } else if (leftArmDistance.xDiff <= 0 && leftArmDistance.yDiff < 0) {
     const xDistanceLeftUp = Math.cos(leftUp) * 65;
     const yDistanceLeftUp = Math.sin(leftUp) * 65;
     letfHandKeypoints = {
