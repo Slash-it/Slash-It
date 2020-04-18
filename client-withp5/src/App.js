@@ -3,7 +3,7 @@ import Sketch from "react-p5";
 import * as ml5 from 'ml5'
 import collideCircle from './helpers/collideCircle'
 import Fruit from './objects/fruit'
-// import { createHandKeypoint } from './helpers/extend'
+import { createHandKeypoint } from './helpers/extend'
 
 function App() {
   let video;
@@ -14,6 +14,7 @@ function App() {
   // let calibrate_left = false;
   // let calibrate_right = false;
   let fruits = []
+  let score = 0
   // let handKeypoints
 
   function preload(p5){
@@ -21,33 +22,35 @@ function App() {
   }
 
   function setup(p5, parent) {
-    p5.createCanvas(640, 480).parent(parent)
+    p5.createCanvas(window.innerWidth, window.innerHeight).parent(parent)
     video = p5.createCapture(p5.VIDEO).parent(parent)
-    video.hide();
-    poseNet = ml5.poseNet(video, modelLoaded);
-    poseNet.on('pose', gotPoses);
+    video.size(window.innerWidth, window.innerHeight)
+    video.hide()
+    poseNet = ml5.poseNet(video, modelLoaded)
+    poseNet.on('pose', gotPoses)
   }
 
   function gotPoses(poses) {
     //console.log(poses);
     if (poses.length > 0) {
-      pose = poses[0].pose;
-      skeleton = poses[0].skeleton;
+      pose = poses[0].pose
+      skeleton = poses[0].skeleton
     }
     // handKeypoints = createHandKeypoint(pose.keypoints)
   }
 
   function modelLoaded() {
-    console.log('poseNet ready');
+    console.log('poseNet ready')
   }
 
   function draw(p5) {
-    if(Math.random() >= 0.95){
+    if(Math.random() >= 0.9){
       fruits.push(new Fruit(p5, video, fruit_png))
     }
+    p5.push()
     p5.translate(video.width,0)
     p5.scale(-1,1)
-    p5.image(video, 0, 0);
+    p5.image(video, 0, 0, window.innerWidth, window.innerHeight);
     // p5.image(icon, 0, 0, 50, 50)
     // p5.scale(-1.0,1.0);
     if (pose) {
@@ -75,26 +78,30 @@ function App() {
 
       let x_leftWrist = pose.leftWrist.x
       let y_leftWrist = pose.leftWrist.y
-      p5.fill(0, 255, 0)
-      p5.ellipse(x_leftWrist, y_leftWrist, 50, 50)
+      // p5.fill(0, 255, 0)
+      // p5.ellipse(x_leftWrist, y_leftWrist, 50, 50)
       
       let x_rightWrist = pose.rightWrist.x
       let y_rightWrist = pose.rightWrist.y
-      p5.fill(0, 255, 0)
-      p5.ellipse(x_rightWrist, y_rightWrist, 50, 50)
+      // p5.fill(0, 255, 0)
+      // p5.ellipse(x_rightWrist, y_rightWrist, 50, 50)
 
       for(let fruit of fruits){
         fruit.show()
         fruit.move()
         if( collideCircle(x_leftWrist, y_leftWrist, 50, fruit.x, fruit.y, fruit.diameter) ){
-          // calibrate_left = true
           fruit.unShow()
+          score += 10
         }
   
         if( collideCircle(x_rightWrist, y_rightWrist, 50, fruit.x, fruit.y, fruit.diameter) ){
-          // calibrate_right = true
           fruit.unShow()
+          score += 10
         }
+
+        // if(fruit.x > (video.width + fruit.diameter) || fruit.x < (0 - fruit.diameter)){
+
+        // }
       }
 
       // if( collideCircle(x_leftWrist, y_leftWrist, 50, 640-80, 0+80, 60) ){
@@ -106,17 +113,17 @@ function App() {
       // }
 
       // if(handKeypoints.letfHandKeypoints == undefined){
-      //   handKeypoints = {...handKeypoints, letfHandKeypoints: {
-      //     x: 1000,
-      //     y: 1000
-      //   }}
+      //   // handKeypoints = {...handKeypoints, letfHandKeypoints: {
+      //   //   x: 1000,
+      //   //   y: 1000
+      //   // }}
       // }
 
       // if(handKeypoints.rightHandKeypoints == undefined){
-      //   handKeypoints = {...handKeypoints, rightHandKeypoints: {
-      //     x: 1000,
-      //     y: 1000
-      //   }}
+      //   // handKeypoints = {...handKeypoints, rightHandKeypoints: {
+      //   //   x: 1000,
+      //   //   y: 1000
+      //   // }}
       // }
 
       // let x_leftWrist = handKeypoints.letfHandKeypoints.x
@@ -129,28 +136,48 @@ function App() {
       // p5.fill(0, 255, 0)
       // p5.ellipse(x_rightWrist, y_rightWrist, 50, 50)
 
-      // if( collideCircle(x_leftWrist, y_leftWrist, 50, 640-80, 0+80, 60) ){
-      //   calibrate_left = true
-      // }
+      // for(let fruit of fruits){
+      //   fruit.show()
+      //   fruit.move()
+      //   if( collideCircle(x_leftWrist, y_leftWrist, 50, fruit.x, fruit.y, fruit.diameter) ){
+      //     fruit.unShow()
+      //     score += 10
+      //   }
+  
+      //   if( collideCircle(x_rightWrist, y_rightWrist, 50, fruit.x, fruit.y, fruit.diameter) ){
+      //     fruit.unShow()
+      //     score += 10
+      //   }
 
-      // if( collideCircle(x_rightWrist, y_rightWrist, 50, 0+80, 0+80, 60) ){
-      //   calibrate_right = true
+      //   // if(fruit.x > (video.width + fruit.diameter) || fruit.x < (0 - fruit.diameter)){
+
+      //   // }
       // }
       
       for (let i = 0; i < skeleton.length; i++) {
-        let a = skeleton[i][0];
-        let b = skeleton[i][1];
-        p5.strokeWeight(2);
-        p5.stroke(255);
-        p5.line(a.position.x, a.position.y, b.position.x, b.position.y);
+        let a = skeleton[i][0]
+        let b = skeleton[i][1]
+        p5.strokeWeight(2)
+        p5.stroke(255)
+        p5.line(a.position.x, a.position.y, b.position.x, b.position.y)
       }
 
+    }
+    p5.pop()
+
+    if(pose){
+      p5.textSize(50)
+      p5.fill(51)
+      // p5.textAlign(p5.CENTER, p5.CENTER);
+      p5.text(`Score: ${score}`, 0, 50)
     }
   }
 
   return (
     <div className="App">
-      <Sketch preload={preload} setup={setup} draw={draw} />
+      <div>
+        <Sketch preload={preload} setup={setup} draw={draw} />
+      </div>
     </div>
   );
 }
