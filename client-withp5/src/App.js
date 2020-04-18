@@ -2,6 +2,7 @@ import React from 'react';
 import Sketch from "react-p5";
 import * as ml5 from 'ml5'
 import collideCircle from './helpers/collideCircle'
+import { createHandKeypoint } from './helpers/extend'
 
 function App() {
   let video;
@@ -11,6 +12,7 @@ function App() {
   let fruit_1;
   let calibrate_left = false;
   let calibrate_right = false;
+  let handKeypoints
 
   function preload(p5){
     fruit_1 = p5.loadImage("https://cdn4.iconfinder.com/data/icons/slot-machines/512/Grapes-512.png")
@@ -30,6 +32,7 @@ function App() {
       pose = poses[0].pose;
       skeleton = poses[0].skeleton;
     }
+    handKeypoints = createHandKeypoint(pose.keypoints)
   }
 
   function modelLoaded() {
@@ -43,6 +46,8 @@ function App() {
     // p5.image(icon, 0, 0, 50, 50)
     // p5.scale(-1.0,1.0);
     if (pose) {
+      console.log(handKeypoints.letfHandKeypoints, 'ini keypoint tangan kiri')
+      console.log(handKeypoints.rightHandKeypoints, 'ini keypoint tangan kanan')
       // p5.image(fruit_1, 0, 0, 50, 50)
       p5.fill(255, 0, 0)
       if(!calibrate_left){
