@@ -3,7 +3,7 @@ import {
 } from '../actions/action-types';
 
 const defaultState = {
-  keypoints = []
+  keypoints: []
 }
 
 const reducer = (state = defaultState, action) => {
