@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import * as posenet from '@tensorflow-models/posenet'
+import { connect } from 'react-redux';
 import {drawKeyPoints, drawSkeleton, config } from '../helpers';
+import { update_keypoints } from '../store/actions/keypoints';
 
 class PoseNet extends Component {
   static defaultProps = config
@@ -202,5 +204,11 @@ class PoseNet extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  update_keypoints: (keypoints) => {
+    dispatch(update_keypoints(keypoints));
+  }
+});
 
-export default PoseNet;
+
+export default connect(null, mapDispatchToProps)(PoseNet);
