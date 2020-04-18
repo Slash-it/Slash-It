@@ -7,7 +7,7 @@ export const config = {
   flipHorizontal: true,
   algorithm: 'single-pose',
   showVideo: true,
-  showSkeleton: true,
+  showSkeleton: false,
   showPoints: true,
   minPoseConfidence: 0.5,
   minPartConfidence: 0.5,

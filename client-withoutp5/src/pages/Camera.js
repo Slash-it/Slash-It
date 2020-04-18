@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { drawKeyPoints, drawSkeleton, config } from "../helpers";
 import { update_keypoints } from "../store/actions/keypoints";
 import { createHandKeypoint } from "../helpers/extend";
+import collideCircle from '../helpers/collideCircle';
 
 class PoseNet extends Component {
   static defaultProps = config;
@@ -21,6 +22,13 @@ class PoseNet extends Component {
 
   getVideo = (elem) => {
     this.video = elem;
+  };
+
+  getImage = (elem) => {
+    this.fruit = elem;
+  };
+  getImage2 = (elem) => {
+    this.fruit2 = elem;
   };
 
   async componentDidMount() {
@@ -170,6 +178,31 @@ class PoseNet extends Component {
           part: 'rightHand',
           score: 0.99
         }];
+        const x1 = this.fruit.getBoundingClientRect().x
+        const y1 = this.fruit.getBoundingClientRect().y
+        const x2 = this.fruit2.getBoundingClientRect().x
+        const y2 = this.fruit2.getBoundingClientRect().y
+        if (letfHandKeypoints) {
+          const collideLeft1 = collideCircle(letfHandKeypoints.x, letfHandKeypoints.y, 150, x1, y1, 150)
+          const collideLeft2 = collideCircle(letfHandKeypoints.x, letfHandKeypoints.y, 150, x2, y2, 150)
+          // const collideLeft = collideCircle(keypoints[9].position.x, keypoints[9].position.y, 150, x, y, 150);
+          if (collideLeft1) {
+            this.fruit.style.display = 'none';
+          } else if (collideLeft2) {
+            this.fruit2.style.display = 'none';
+          }
+        }
+
+        if (rightHandKeypoints) {
+          const collideRight1 = collideCircle(rightHandKeypoints.x, rightHandKeypoints.y, 150, x1, y1, 150)
+          const collideRight2 = collideCircle(rightHandKeypoints.x, rightHandKeypoints.y, 150, x2, y2, 150)
+          // const collideRight = collideCircle(keypoints[10].position.x, keypoints[10].position.y, 150, x, y, 150);
+          if (collideRight1) {
+            this.fruit.style.display = 'none';
+          } else if (collideRight2) {
+            this.fruit2.style.display = 'none';
+          }
+        }
 
         if (score >= minPoseConfidence) {
           if (showPoints) {
@@ -204,6 +237,8 @@ class PoseNet extends Component {
         <div>{loading}</div>
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
+          {!loading && <img src="/assets/Grapes.png" alt="" style={style} ref={this.getImage} className="image" /> }
+          {!loading && <img src="/assets/Grapes.png" alt="" style={style2} ref={this.getImage2} className="image" /> }
           <canvas className="webcam" ref={this.getCanvas} />
         </div>
       </div>
@@ -216,5 +251,23 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(update_keypoints(keypoints));
   },
 });
+
+const style = {
+  position: 'absolute',
+  top: 100,
+  left: 100,
+  width: 150,
+  height: 150,
+  zIndex: 888
+}
+
+const style2 = {
+  position: 'absolute',
+  top: 100,
+  right: 100,
+  width: 150,
+  height: 150,
+  zIndex: 888
+}
 
 export default connect(null, mapDispatchToProps)(PoseNet);
