@@ -1,90 +1,91 @@
-import React, {Component} from 'react'
-import * as posenet from '@tensorflow-models/posenet'
-import { connect } from 'react-redux';
-import {drawKeyPoints, drawSkeleton, config } from '../helpers';
-import { update_keypoints } from '../store/actions/keypoints';
+import React, { Component } from "react";
+import * as posenet from "@tensorflow-models/posenet";
+import { connect } from "react-redux";
+import { drawKeyPoints, drawSkeleton, config } from "../helpers";
+import { update_keypoints } from "../store/actions/keypoints";
+import { createHandKeypoint } from "../helpers/extend";
 
 class PoseNet extends Component {
-  static defaultProps = config
+  static defaultProps = config;
 
   constructor(props) {
-    super(props, PoseNet.defaultProps)
+    super(props, PoseNet.defaultProps);
     this.state = {
-      loading: true
-    }
+      loading: true,
+    };
   }
 
-  getCanvas = elem => {
-    this.canvas = elem
-  }
+  getCanvas = (elem) => {
+    this.canvas = elem;
+  };
 
-  getVideo = elem => {
-    this.video = elem
-  }
+  getVideo = (elem) => {
+    this.video = elem;
+  };
 
   async componentDidMount() {
     try {
-      await this.setupCamera()
+      await this.setupCamera();
     } catch (error) {
       throw new Error(
-        'This browser does not support video capture, or this device does not have a camera'
-      )
+        "This browser does not support video capture, or this device does not have a camera"
+      );
     }
 
     try {
-      this.posenetModel = await posenet.load()
+      this.posenetModel = await posenet.load();
     } catch (error) {
-      throw new Error('posenet failed to load')
+      throw new Error("posenet failed to load");
     } finally {
       setTimeout(() => {
-        this.setState({loading: false})
-      }, 200)
+        this.setState({ loading: false });
+      }, 200);
     }
 
-    this.detectPose()
+    this.detectPose();
   }
 
   async setupCamera() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw new Error(
-        'Browser API navigator.mediaDevices.getUserMedia not available'
-      )
+        "Browser API navigator.mediaDevices.getUserMedia not available"
+      );
     }
 
-    const video = this.video
-    video.width = this.props.width
-    video.height = this.props.height
+    const video = this.video;
+    video.width = this.props.width;
+    video.height = this.props.height;
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
-          facingMode: 'user',
+          facingMode: "user",
           width: this.props.width,
-          height: this.props.height
-        }
-      })
-      video.srcObject = stream
+          height: this.props.height,
+        },
+      });
+      video.srcObject = stream;
     } catch (error) {
-      throw new Error('Failed to access webcam')
+      throw new Error("Failed to access webcam");
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       video.onloadedmetadata = () => {
-        video.play()
-        resolve(video)
-      }
-    })
+        video.play();
+        resolve(video);
+      };
+    });
   }
 
   detectPose() {
-    const canvas = this.canvas
-    const canvasContext = canvas.getContext('2d')
+    const canvas = this.canvas;
+    const canvasContext = canvas.getContext("2d");
 
-    canvas.width = this.props.width
-    canvas.height = this.props.height
+    canvas.width = this.props.width;
+    canvas.height = this.props.height;
 
-    this.poseDetectionFrame(canvasContext)
+    this.poseDetectionFrame(canvasContext);
   }
 
   poseDetectionFrame(canvasContext) {
@@ -101,75 +102,83 @@ class PoseNet extends Component {
       showPoints,
       showSkeleton,
       skeletonColor,
-      skeletonLineWidth
-    } = this.props
+      skeletonLineWidth,
+    } = this.props;
 
-    const posenetModel = this.posenetModel
-    const video = this.video
+    const posenetModel = this.posenetModel;
+    const video = this.video;
 
     const poseDetectionFrameInner = async () => {
-      let poses = []
+      let poses = [];
 
       switch (algorithm) {
-        case 'multi-pose': {
-          poses = await posenetModel.estimateMultiplePoses(
-            video,{
+        case "multi-pose": {
+          poses = await posenetModel.estimateMultiplePoses(video, {
             imageScaleFactor,
             flipHorizontal,
             outputStride,
             maxPoseDetections,
             minPartConfidence,
-            nmsRadius}
-          )
-          break
+            nmsRadius,
+          });
+          break;
         }
-        case 'single-pose': {
-          const pose = await posenetModel.estimateSinglePose(
-            video, {
+        case "single-pose": {
+          const pose = await posenetModel.estimateSinglePose(video, {
             imageScaleFactor,
             flipHorizontal,
-            outputStride}
-          )
-          poses.push(pose)
-          break
+            outputStride,
+          });
+          poses.push(pose);
+          break;
         }
         default: {
-          const pose = await posenetModel.estimateSinglePose(
-            video,{
-              imageScaleFactor,
-              flipHorizontal,
-              outputStride
-            }
-          )
-          poses.push(pose)
+          const pose = await posenetModel.estimateSinglePose(video, {
+            imageScaleFactor,
+            flipHorizontal,
+            outputStride,
+          });
+          poses.push(pose);
         }
       }
 
-      canvasContext.clearRect(0, 0, this.props.width, this.props.height)
+      canvasContext.clearRect(0, 0, this.props.width, this.props.height);
 
       if (showVideo) {
-        canvasContext.save()
-        canvasContext.scale(-1, 1)
-        canvasContext.translate(-this.props.width, 0)
+        canvasContext.save();
+        canvasContext.scale(-1, 1);
+        canvasContext.translate(-this.props.width, 0);
         canvasContext.drawImage(
           video,
           0,
           0,
           this.props.width,
           this.props.height
-        )
-        canvasContext.restore()
+        );
+        canvasContext.restore();
       }
 
-      poses.forEach(({score, keypoints}) => {
+      poses.forEach(({ score, keypoints }) => {
+        const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(keypoints);
+        const newKeypointsL = [...keypoints, {
+          position: letfHandKeypoints,
+          part: 'leftHand',
+          score: 0.99
+        }];
+        const newKeypointsR = [...newKeypointsL, {
+          position: rightHandKeypoints,
+          part: 'rightHand',
+          score: 0.99
+        }];
+
         if (score >= minPoseConfidence) {
           if (showPoints) {
             drawKeyPoints(
-              keypoints,
+              newKeypointsR,
               minPartConfidence,
               skeletonColor,
               canvasContext
-            )
+            );
           }
           if (showSkeleton) {
             drawSkeleton(
@@ -178,19 +187,17 @@ class PoseNet extends Component {
               skeletonColor,
               skeletonLineWidth,
               canvasContext
-            )
+            );
           }
         }
-      })
-      requestAnimationFrame(poseDetectionFrameInner)
-    }
-    poseDetectionFrameInner()
+      });
+      requestAnimationFrame(poseDetectionFrameInner);
+    };
+    poseDetectionFrameInner();
   }
 
   render() {
-    const loading = this.state.loading ? (
-      <div>Loading....</div>
-    ) : null
+    const loading = this.state.loading ? <div>Loading....</div> : null;
 
     return (
       <div className="centered">
@@ -200,15 +207,14 @@ class PoseNet extends Component {
           <canvas className="webcam" ref={this.getCanvas} />
         </div>
       </div>
-    )
+    );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   update_keypoints: (keypoints) => {
     dispatch(update_keypoints(keypoints));
-  }
+  },
 });
-
 
 export default connect(null, mapDispatchToProps)(PoseNet);

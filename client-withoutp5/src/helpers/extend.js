@@ -51,35 +51,35 @@ export const createHandKeypoint = (keypoints) => {
   // extending keypoint to right hand
   let rightHandKeypoints;
   if (rightArmDistance.xDiff >= 0 && rightArmDistance.yDiff >= 0) {
-    const xDistanceRightDown = Math.cos(rightDown) * 65; // radius perkalian masih belum pasti 
-    const yDistanceRightDown = Math.sin(rightDown) * 65; // radius perkalian masih belum pasti
+    const xDistanceRightDown = Math.cos(rightDown) * 80; // radius perkalian masih belum pasti 
+    const yDistanceRightDown = Math.sin(rightDown) * 80; // radius perkalian masih belum pasti
     rightHandKeypoints = {
-      x: rightWrist.x + xDistanceRightDown,
-      y: rightWrist.y + yDistanceRightDown
+      y: rightWrist.y + yDistanceRightDown,
+      x: rightWrist.x + xDistanceRightDown
     };
   } else if (rightArmDistance.xDiff > 0 && rightArmDistance.yDiff < 0) {
-    const xDistanceRightUp = Math.cos(rightUp) * 65;
-    const yDistanceRightUp = Math.sin(rightUp) * 65;
+    const xDistanceRightUp = Math.cos(rightUp) * 80;
+    const yDistanceRightUp = Math.sin(rightUp) * 80;
     rightHandKeypoints = {
-      x: rightWrist.x + xDistanceRightUp,
-      y: rightWrist.y + yDistanceRightUp
+      y: rightWrist.y + yDistanceRightUp,
+      x: rightWrist.x + xDistanceRightUp
     };
   }
 
   let letfHandKeypoints;
   if (leftArmDistance.xDiff <= 0 && leftArmDistance.yDiff >= 0) {
-    const xDistanceLeftDown = Math.cos(leftDown) * 65;
-    const yDistanceLeftDown = Math.sin(leftDown) * 65;
+    const xDistanceLeftDown = Math.cos(leftDown) * 80;
+    const yDistanceLeftDown = Math.sin(leftDown) * 80;
     letfHandKeypoints = {
-      x: leftWrist.x + xDistanceLeftDown,
       y: leftWrist.y + yDistanceLeftDown,
+      x: leftWrist.x + xDistanceLeftDown,
     };
   } else if (leftArmDistance.xDiff <= 0 && leftArmDistance.yDiff < 0) {
-    const xDistanceLeftUp = Math.cos(leftUp) * 65;
-    const yDistanceLeftUp = Math.sin(leftUp) * 65;
+    const xDistanceLeftUp = Math.cos(leftUp) * 80;
+    const yDistanceLeftUp = Math.sin(leftUp) * 80;
     letfHandKeypoints = {
+      y: leftWrist.y + yDistanceLeftUp,
       x: leftWrist.x + xDistanceLeftUp,
-      y: leftWrist.y + yDistanceLeftUp
     };
   }
 
