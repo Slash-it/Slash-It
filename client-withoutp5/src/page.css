@@ -1,0 +1,164 @@
+@import url(https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap);
+
+@-webkit-keyframes swinging{
+  0%{-webkit-transform: rotate(40deg);}
+  50%{-webkit-transform: rotate(-40deg)}
+  100%{-webkit-transform: rotate(40deg);}
+}
+
+@keyframes swinging{
+  0%{transform: rotate(40deg);}
+  50%{transform: rotate(-45deg)}
+  100%{transform: rotate(40deg);}
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes rotationreverse {
+  from {
+    transform: rotate(359deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes bounce {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-100px); }
+  100% { transform: translateY(0); }
+}
+
+.rotate {
+  animation: rotation 4s infinite linear;
+}
+
+.rotatereverse{
+  animation: rotationreverse 8s infinite linear
+}
+
+.bounce {
+  animation: bounce infinite;
+  animation-timing-function: ease;
+}
+
+.swingimage{
+  -webkit-transform-origin: 50% 0;
+  transform-origin: 50% 0;
+  -webkit-animation: swinging 3.5s ease-in-out forwards infinite;
+  animation: swinging 3.5s ease-in-out forwards infinite;
+}
+
+.strawberry.rotate{
+  width: 150px;
+  height: 150px;
+  transform: rotate(-40deg);
+  margin-top: 20px;
+}
+
+.banana.rotate{
+  width: 100px;
+  height: 100px;
+  margin-top: 20px;
+  position: absolute;
+  top: 5%;
+  left: 20%;
+}
+
+.pear.rotate{
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  bottom: 3%;
+  left: 2%;
+}
+
+.orange.rotatereverse{
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 2%;
+  right: 5%;
+}
+
+.apple.rotatereverse{
+  width: 150px;
+  height: 150px;
+  transform: rotate(-70deg);
+  position: absolute;
+  bottom: 25%;
+  right: 10%;
+}
+
+.watermelon.rotate{
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  bottom: 4%;
+  left: 60%;
+  transform: rotate(90deg);
+}
+
+.strawberry2.rotatereverse{
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  bottom: 10%;
+  left: 30%;
+}
+
+.grapes.rotatereverse{
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: 30%;
+  left: 13%;
+  display: flex;
+}
+
+.center{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.Body {
+  background-image: url('./assets/background2.png') ;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  min-height: 100vh;
+  min-width: 100vh;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  text-align: center;
+}
+
+
+h3{
+  font-family: 'Fredoka One';
+  font-size: 50px;
+}
+
+h4{
+  font-family: 'Fredoka One';
+  font-size: 30px; 
+}
+
+.btn{
+  margin-top: 25px;
+}
