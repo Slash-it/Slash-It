@@ -16,8 +16,14 @@ class Fruit {
         this.vy -= this.gravity
     }
 
+    unShow(){
+        this.isShown = false
+    }
+
     show() {
-        this.p5.ellipse(this.x, this.y, this.diameter, this.diameter)
+        if(this.isShown){
+            this.p5.ellipse(this.x, this.y, this.diameter, this.diameter)
+        }
     }
 }
 

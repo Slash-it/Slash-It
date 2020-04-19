@@ -194,6 +194,12 @@ class PoseNet extends Component {
           } else if (collideLeft2) {
             this.fruit2.style.display = 'none';
           }
+
+          for(let fruit of this.state.fruits){
+            if( collideCircle(letfHandKeypoints.x, letfHandKeypoints.y, 150, fruit.x, fruit.y, fruit.diameter) ){
+              fruit.unShow()
+            }
+          }
         }
 
         if (rightHandKeypoints) {
@@ -204,6 +210,12 @@ class PoseNet extends Component {
             this.fruit.style.display = 'none';
           } else if (collideRight2) {
             this.fruit2.style.display = 'none';
+          }
+
+          for(let fruit of this.state.fruits){
+            if( collideCircle(rightHandKeypoints.x, rightHandKeypoints.y, 150, fruit.x, fruit.y, fruit.diameter) ){
+              fruit.unShow()
+            }
           }
         }
 
