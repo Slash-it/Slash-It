@@ -5,6 +5,8 @@ import { drawKeyPoints, drawSkeleton, config } from "../helpers";
 import { update_keypoints } from "../store/actions/keypoints";
 import { createHandKeypoint } from "../helpers/extend";
 import collideCircle from '../helpers/collideCircle';
+import Sketch from "react-p5";
+import Fruit from '../objects/fruit';
 
 class PoseNet extends Component {
   static defaultProps = config;
@@ -13,6 +15,7 @@ class PoseNet extends Component {
     super(props, PoseNet.defaultProps);
     this.state = {
       loading: true,
+      fruits: []
     };
   }
 
@@ -229,6 +232,23 @@ class PoseNet extends Component {
     poseDetectionFrameInner();
   }
 
+  setup = (p5, canvasParentRef) => {
+    p5.createCanvas(this.props.width, this.props.height).parent(canvasParentRef);
+  }
+
+  draw = (p5) => {
+    p5.clear()
+    if(Math.random() >= 0.95){
+      // fruits.push(new Fruit(p5))
+      this.state.fruits.push(new Fruit(p5))
+    }
+    // background(220);
+    for(let fruit of this.state.fruits){
+      fruit.show()
+      fruit.move()
+    }
+  }
+
   render() {
     const loading = this.state.loading ? <div>Loading....</div> : null;
 
@@ -237,9 +257,10 @@ class PoseNet extends Component {
         <div>{loading}</div>
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
-          {/* {!loading && <img src="/assets/Grapes.png" alt="" style={style} ref={this.getImage} className="image" /> }
-          {!loading && <img src="/assets/Grapes.png" alt="" style={style2} ref={this.getImage2} className="image" /> } */}
+          {!loading && <img src="/assets/Grapes.png" alt="" style={style} ref={this.getImage} className="image" /> }
+          {!loading && <img src="/assets/Grapes.png" alt="" style={style2} ref={this.getImage2} className="image" /> }
           <canvas className="webcam" ref={this.getCanvas} />
+          <Sketch setup={this.setup} draw={this.draw} />
         </div>
       </div>
     );
