@@ -237,8 +237,8 @@ class PoseNet extends Component {
         <div>{loading}</div>
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
-          {!loading && <img src="/assets/Grapes.png" alt="" style={style} ref={this.getImage} className="image" /> }
-          {!loading && <img src="/assets/Grapes.png" alt="" style={style2} ref={this.getImage2} className="image" /> }
+          {/* {!loading && <img src="/assets/Grapes.png" alt="" style={style} ref={this.getImage} className="image" /> }
+          {!loading && <img src="/assets/Grapes.png" alt="" style={style2} ref={this.getImage2} className="image" /> } */}
           <canvas className="webcam" ref={this.getCanvas} />
         </div>
       </div>
