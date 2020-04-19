@@ -14,8 +14,19 @@ function App() {
   }
 
   function setup(p5, parent) {
-    p5.createCanvas(640, 480).parent(parent)
-    video = p5.createCapture(p5.VIDEO).parent(parent)
+    p5.createCanvas(1440, 720).parent(parent)
+    let constraints = {
+      video: {
+        mandatory: {
+          minWidth: 1280,
+          minHeight: 720
+        },
+      },
+      audio: false
+    };
+    console.log(p5.VIDEO, parent);
+    // video = p5.createCapture(p5.VIDEO).parent(parent);
+    video = p5.createCapture(constraints).parent(parent);
     video.hide();
     poseNet = ml5.poseNet(video, modelLoaded);
     poseNet.on('pose', gotPoses);
@@ -60,7 +71,7 @@ function App() {
 
   return (
     <div className="App">
-      <Sketch preload={preload} setup={setup} draw={draw} />
+      <Sketch id="sketch" preload={preload} setup={setup} draw={draw} />
     </div>
   );
 }

@@ -7,7 +7,7 @@ export const config = {
   flipHorizontal: true,
   algorithm: 'single-pose',
   showVideo: true,
-  showSkeleton: true,
+  showSkeleton: false,
   showPoints: true,
   minPoseConfidence: 0.5,
   minPartConfidence: 0.5,
@@ -33,11 +33,13 @@ export function drawKeyPoints(
 ) {
   keypoints.forEach(keypoint => {
     if (keypoint.score >= minConfidence) {
-      const {x, y} = keypoint.position
-      canvasContext.beginPath()
-      canvasContext.arc(x * scale, y * scale, pointRadius, 0, 2 * Math.PI)
-      canvasContext.fillStyle = skeletonColor
-      canvasContext.fill()
+      if (keypoint.position) {
+        const {x, y} = keypoint.position
+        canvasContext.beginPath()
+        canvasContext.arc(x * scale, y * scale, pointRadius, 0, 2 * Math.PI)
+        canvasContext.fillStyle = skeletonColor
+        canvasContext.fill()
+      }
     }
   })
 }
