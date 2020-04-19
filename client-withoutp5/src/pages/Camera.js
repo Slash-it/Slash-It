@@ -9,6 +9,8 @@ import Sketch from "react-p5";
 import FruitLeft from '../objects/fruitLeft';
 import FruitRight from '../objects/fruitRight';
 
+const music = new Audio('/assets/audio/Game.mp3');
+
 class PoseNet extends Component {
   static defaultProps = config;
 
@@ -172,13 +174,15 @@ class PoseNet extends Component {
         canvasContext.restore();
       }
 
-      if (!this.props.calibrated && poses[0]) {
+      if (!this.props.calibrated.keypoints && poses[0]) {
         if (poses[0].keypoints[1].score > minPartConfidence && poses[0].keypoints[11].score > minPartConfidence && poses[0].keypoints[13].score > minPartConfidence) {
           console.log('CALIBRATED!!!!');
-          this.setState({ start: true });
           this.props.calibrate(poses[0]);
+          this.setState({ start: true });
         }
-      } else {
+      }
+
+      if (this.props.calibrated.keypoints) {
         poses.forEach(({ score, keypoints }) => {
           // update keypoint di state
           this.props.updateKeypoints(keypoints);
@@ -259,6 +263,10 @@ class PoseNet extends Component {
     poseDetectionFrameInner();
   }
 
+  preload = (p5) => {
+    music.play();
+  } 
+
   setup = (p5, canvasParentRef) => {
     p5.createCanvas(this.props.width, this.props.height).parent(canvasParentRef);
   }
@@ -296,7 +304,7 @@ class PoseNet extends Component {
           <canvas className="webcam" ref={this.getCanvas} />
           {
             !loading && startNow ? 
-            <Sketch setup={this.setup} draw={this.draw} />
+            <Sketch preload={this.preload} setup={this.setup} draw={this.draw} />
             :
             null
           }
@@ -308,7 +316,7 @@ class PoseNet extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    calibrated: state.calibrated
+    calibrated: state.keypoint.calibrated
   }
 }
 
