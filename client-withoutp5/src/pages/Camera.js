@@ -1,88 +1,93 @@
-import React, {Component} from 'react'
-import * as posenet from '@tensorflow-models/posenet'
-import {drawKeyPoints, drawSkeleton, config } from '../helpers';
+import React, { Component } from "react";
+import * as posenet from "@tensorflow-models/posenet";
+import { connect } from "react-redux";
+import { drawKeyPoints, drawSkeleton, config } from "../helpers";
+import { updateKeypoints, calibrate } from "../store/actions/keypoints";
+import Game from './Game';
+import Calibration from '../components/Calibration';
+
 
 class PoseNet extends Component {
-  static defaultProps = config
+  static defaultProps = config;
 
   constructor(props) {
-    super(props, PoseNet.defaultProps)
+    super(props, PoseNet.defaultProps);
     this.state = {
-      loading: true
-    }
+      loading: true,
+    };
   }
 
-  getCanvas = elem => {
-    this.canvas = elem
-  }
+  getCanvas = (elem) => {
+    this.canvas = elem;
+  };
 
-  getVideo = elem => {
-    this.video = elem
-  }
+  getVideo = (elem) => {
+    this.video = elem;
+  };
 
   async componentDidMount() {
     try {
-      await this.setupCamera()
+      await this.setupCamera();
     } catch (error) {
       throw new Error(
-        'This browser does not support video capture, or this device does not have a camera'
-      )
+        "This browser does not support video capture, or this device does not have a camera"
+      );
     }
 
     try {
-      this.posenetModel = await posenet.load()
+      this.posenetModel = await posenet.load();
     } catch (error) {
-      throw new Error('posenet failed to load')
+      throw new Error("posenet failed to load");
     } finally {
       setTimeout(() => {
-        this.setState({loading: false})
-      }, 200)
+        this.setState({ loading: false });
+      }, 200);
     }
 
-    this.detectPose()
+    this.detectPose();
   }
 
   async setupCamera() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw new Error(
-        'Browser API navigator.mediaDevices.getUserMedia not available'
-      )
+        "Browser API navigator.mediaDevices.getUserMedia not available"
+      );
     }
 
-    const video = this.video
-    video.width = this.props.width
-    video.height = this.props.height
+    const video = this.video;
+    video.width = this.props.width;
+    video.height = this.props.height;
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
-          facingMode: 'user',
+          facingMode: "user",
           width: this.props.width,
-          height: this.props.height
-        }
-      })
-      video.srcObject = stream
+          height: this.props.height,
+        },
+      });
+      video.srcObject = stream;
     } catch (error) {
-      throw new Error('Failed to access webcam')
+      throw new Error("Failed to access webcam");
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       video.onloadedmetadata = () => {
-        video.play()
-        resolve(video)
-      }
-    })
+        video.play();
+        resolve(video);
+      };
+    });
   }
 
   detectPose() {
-    const canvas = this.canvas
-    const canvasContext = canvas.getContext('2d')
+    const canvas = this.canvas;
+    const canvasContext = canvas.getContext("2d");
 
-    canvas.width = this.props.width
-    canvas.height = this.props.height
+    canvas.width = this.props.width;
+    canvas.height = this.props.height;
 
-    this.poseDetectionFrame(canvasContext)
+    this.poseDetectionFrame(canvasContext);
   }
 
   poseDetectionFrame(canvasContext) {
@@ -99,67 +104,73 @@ class PoseNet extends Component {
       showPoints,
       showSkeleton,
       skeletonColor,
-      skeletonLineWidth
-    } = this.props
+      skeletonLineWidth,
+    } = this.props;
 
-    const posenetModel = this.posenetModel
-    const video = this.video
+    const posenetModel = this.posenetModel;
+    const video = this.video;
 
     const poseDetectionFrameInner = async () => {
-      let poses = []
+      let poses = [];
 
       switch (algorithm) {
-        case 'multi-pose': {
-          poses = await posenetModel.estimateMultiplePoses(
-            video,{
+        case "multi-pose": {
+          poses = await posenetModel.estimateMultiplePoses(video, {
             imageScaleFactor,
             flipHorizontal,
             outputStride,
             maxPoseDetections,
             minPartConfidence,
-            nmsRadius}
-          )
-          break
+            nmsRadius,
+          });
+          break;
         }
-        case 'single-pose': {
-          const pose = await posenetModel.estimateSinglePose(
-            video, {
+        case "single-pose": {
+          const pose = await posenetModel.estimateSinglePose(video, {
             imageScaleFactor,
             flipHorizontal,
-            outputStride}
-          )
-          poses.push(pose)
-          break
+            outputStride,
+          });
+          poses.push(pose);
+          break;
         }
         default: {
-          const pose = await posenetModel.estimateSinglePose(
-            video,{
-              imageScaleFactor,
-              flipHorizontal,
-              outputStride
-            }
-          )
-          poses.push(pose)
+          const pose = await posenetModel.estimateSinglePose(video, {
+            imageScaleFactor,
+            flipHorizontal,
+            outputStride,
+          });
+          poses.push(pose);
         }
       }
 
-      canvasContext.clearRect(0, 0, this.props.width, this.props.height)
+      canvasContext.clearRect(0, 0, this.props.width, this.props.height);
 
       if (showVideo) {
-        canvasContext.save()
-        canvasContext.scale(-1, 1)
-        canvasContext.translate(-this.props.width, 0)
+        canvasContext.save();
+        canvasContext.scale(-1, 1);
+        canvasContext.translate(-this.props.width, 0);
         canvasContext.drawImage(
           video,
           0,
           0,
           this.props.width,
           this.props.height
-        )
-        canvasContext.restore()
+        );
+        canvasContext.restore();
       }
 
-      poses.forEach(({score, keypoints}) => {
+      if (!this.props.calibrated.keypoints && poses[0]) {
+        if (poses[0].keypoints[1].score > minPartConfidence && poses[0].keypoints[11].score > minPartConfidence && poses[0].keypoints[13].score > minPartConfidence) {
+          console.log('CALIBRATED!!!!');
+          this.props.calibrate(poses[0]);
+        }
+      }
+
+      poses.forEach(({ score, keypoints }) => {
+        // update keypoint di state
+        this.props.updateKeypoints(keypoints);
+
         if (score >= minPoseConfidence) {
           if (showPoints) {
             drawKeyPoints(
@@ -167,7 +178,7 @@ class PoseNet extends Component {
               minPartConfidence,
               skeletonColor,
               canvasContext
-            )
+            );
           }
           if (showSkeleton) {
             drawSkeleton(
@@ -176,31 +187,69 @@ class PoseNet extends Component {
               skeletonColor,
               skeletonLineWidth,
               canvasContext
-            )
+            );
           }
         }
-      })
-      requestAnimationFrame(poseDetectionFrameInner)
-    }
-    poseDetectionFrameInner()
+      });
+
+      requestAnimationFrame(poseDetectionFrameInner);
+    };
+    poseDetectionFrameInner();
   }
 
   render() {
-    const loading = this.state.loading ? (
-      <div>Loading....</div>
-    ) : null
-
+    const loading = this.state.loading ? <div>Loading....</div> : null;
     return (
       <div className="centered">
         <div>{loading}</div>
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />
+          { !loading ? <Calibration /> : null }
+          {
+            !loading ? 
+            <Game width={this.props.width} height={this.props.height} />
+            :
+            null
+          }
         </div>
       </div>
-    )
+    );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    calibrated: state.keypoint.calibrated
+  }
+}
 
-export default PoseNet;
+const mapDispatchToProps = (dispatch) => ({
+  updateKeypoints: (keypoints) => {
+    dispatch(updateKeypoints(keypoints));
+  },
+
+  calibrate: (calibratedPose) => {
+    dispatch(calibrate(calibratedPose));
+  },
+});
+
+const style = {
+  position: 'absolute',
+  top: 100,
+  left: 100,
+  width: 150,
+  height: 150,
+  zIndex: 888
+}
+
+const style2 = {
+  position: 'absolute',
+  top: 100,
+  right: 100,
+  width: 150,
+  height: 150,
+  zIndex: 888
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PoseNet);
