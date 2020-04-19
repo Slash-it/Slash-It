@@ -1,8 +1,14 @@
 import {
   UPDATE_KEYPOINTS,
+  CALIBRATE,
 } from './action-types'
 
-export const update_keypoints = (keypoints) => ({
+export const updateKeypoints = (keypoints) => ({
   type: UPDATE_KEYPOINTS,
   keypoints
 });
+
+export const calibrate = (pose) => ({
+  type: CALIBRATE,
+  pose,
+})
