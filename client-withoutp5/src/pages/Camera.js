@@ -5,9 +5,12 @@ import { drawKeyPoints, drawSkeleton, config } from "../helpers";
 import { update_keypoints } from "../store/actions/keypoints";
 import { createHandKeypoint } from "../helpers/extend";
 import collideCircle from '../helpers/collideCircle';
+import isInsideFrame from '../helpers/isInsideFrame';
 import Sketch from "react-p5";
 import FruitLeft from '../objects/fruitLeft';
 import FruitRight from '../objects/fruitRight';
+import BombLeft from '../objects/bombLeft';
+import BombRight from '../objects/bombRight';
 
 class PoseNet extends Component {
   static defaultProps = config;
@@ -17,7 +20,10 @@ class PoseNet extends Component {
     this.state = {
       loading: true,
       fruits: [],
-      boundary: 300
+      bombs: [],
+      boundary: 300,
+      score: 0,
+      HP: 100
     };
   }
 
@@ -198,8 +204,15 @@ class PoseNet extends Component {
           }
 
           for(let fruit of this.state.fruits){
-            if( collideCircle(letfHandKeypoints.x, letfHandKeypoints.y, 150, fruit.x, fruit.y, fruit.diameter) ){
+            if( collideCircle(letfHandKeypoints.x, letfHandKeypoints.y, 150, fruit.x, fruit.y, fruit.diameter) && (isInsideFrame(fruit.x, fruit.y, this.props.width, this.props.height)) ){
               fruit.unShow()
+              this.setState({ score: this.state.score + 10 });
+            }
+          }
+          for(let bomb of this.state.bombs){
+            if( collideCircle(letfHandKeypoints.x, letfHandKeypoints.y, 150, bomb.x, bomb.y, bomb.diameter) && (isInsideFrame(bomb.x, bomb.y, this.props.width, this.props.height)) ){
+              bomb.unShow()
+              this.setState({ HP: this.state.HP - 10 });
             }
           }
         }
@@ -215,8 +228,15 @@ class PoseNet extends Component {
           }
 
           for(let fruit of this.state.fruits){
-            if( collideCircle(rightHandKeypoints.x, rightHandKeypoints.y, 150, fruit.x, fruit.y, fruit.diameter) ){
+            if( collideCircle(rightHandKeypoints.x, rightHandKeypoints.y, 150, fruit.x, fruit.y, fruit.diameter) && (isInsideFrame(fruit.x, fruit.y, this.props.width, this.props.height)) ){
               fruit.unShow()
+              this.setState({ score: this.state.score + 10 });
+            }
+          }
+          for(let bomb of this.state.bombs){
+            if( collideCircle(rightHandKeypoints.x, rightHandKeypoints.y, 150, bomb.x, bomb.y, bomb.diameter) && (isInsideFrame(bomb.x, bomb.y, this.props.width, this.props.height)) ){
+              bomb.unShow()
+              this.setState({ HP: this.state.HP - 10 });
             }
           }
         }
@@ -251,17 +271,31 @@ class PoseNet extends Component {
   }
 
   draw = (p5) => {
+    console.log(this.state.score, 'score')
+    console.log(this.state.HP, 'HP')
+    
     p5.clear()
-    if(Math.random() >= 0.96){
+    if(Math.random() >= 0.985){
       this.state.fruits.push(new FruitLeft(p5, this.state.boundary))
     }
-    if(Math.random() >= 0.96){
+    if(Math.random() >= 0.985){
       this.state.fruits.push(new FruitRight(p5, this.state.boundary))
+    }
+    if(Math.random() >= 0.993){
+      this.state.bombs.push(new BombLeft(p5, this.state.boundary))
+    }
+    if(Math.random() >= 0.993){
+      this.state.bombs.push(new BombRight(p5, this.state.boundary))
     }
     
     for(let fruit of this.state.fruits){
       fruit.show()
       fruit.move()
+    }
+
+    for(let bomb of this.state.bombs){
+      bomb.show()
+      bomb.move()
     }
 
     p5.fill(240, 0, 0)
