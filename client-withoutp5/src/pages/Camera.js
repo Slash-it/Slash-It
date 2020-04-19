@@ -9,7 +9,8 @@ import Sketch from "react-p5";
 import FruitLeft from '../objects/fruitLeft';
 import FruitRight from '../objects/fruitRight';
 
-const music = new Audio('/assets/audio/Game.mp3');
+const music = new Audio('/assets/audio/GameBg.mp3');
+
 
 class PoseNet extends Component {
   static defaultProps = config;
@@ -42,6 +43,10 @@ class PoseNet extends Component {
   async componentDidMount() {
     try {
       await this.setupCamera();
+      music.addEventListener('ended', function() {
+        music.play();
+      })
+      music.play();
     } catch (error) {
       throw new Error(
         "This browser does not support video capture, or this device does not have a camera"
@@ -263,9 +268,9 @@ class PoseNet extends Component {
     poseDetectionFrameInner();
   }
 
-  preload = (p5) => {
-    music.play();
-  } 
+  // preload = (p5) => {
+  //   music.play();
+  // } 
 
   setup = (p5, canvasParentRef) => {
     p5.createCanvas(this.props.width, this.props.height).parent(canvasParentRef);
@@ -304,7 +309,7 @@ class PoseNet extends Component {
           <canvas className="webcam" ref={this.getCanvas} />
           {
             !loading && startNow ? 
-            <Sketch preload={this.preload} setup={this.setup} draw={this.draw} />
+            <Sketch setup={this.setup} draw={this.draw} />
             :
             null
           }
