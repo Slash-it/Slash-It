@@ -6,7 +6,8 @@ import { update_keypoints } from "../store/actions/keypoints";
 import { createHandKeypoint } from "../helpers/extend";
 import collideCircle from '../helpers/collideCircle';
 import Sketch from "react-p5";
-import Fruit from '../objects/fruit';
+import FruitLeft from '../objects/fruitLeft';
+import FruitRight from '../objects/fruitRight';
 
 class PoseNet extends Component {
   static defaultProps = config;
@@ -15,7 +16,8 @@ class PoseNet extends Component {
     super(props, PoseNet.defaultProps);
     this.state = {
       loading: true,
-      fruits: []
+      fruits: [],
+      boundary: 300
     };
   }
 
@@ -250,15 +252,22 @@ class PoseNet extends Component {
 
   draw = (p5) => {
     p5.clear()
-    if(Math.random() >= 0.95){
-      // fruits.push(new Fruit(p5))
-      this.state.fruits.push(new Fruit(p5))
+    if(Math.random() >= 0.96){
+      this.state.fruits.push(new FruitLeft(p5, this.state.boundary))
     }
-    // background(220);
+    if(Math.random() >= 0.96){
+      this.state.fruits.push(new FruitRight(p5, this.state.boundary))
+    }
+    
     for(let fruit of this.state.fruits){
       fruit.show()
       fruit.move()
     }
+
+    p5.fill(240, 0, 0)
+    
+    p5.rect(this.state.boundary, 0, 2, p5.height-5)
+    p5.rect(p5.width - this.state.boundary, 0, 2, p5.height-5)
   }
 
   render() {
@@ -272,7 +281,12 @@ class PoseNet extends Component {
           {!loading && <img src="/assets/Grapes.png" alt="" style={style} ref={this.getImage} className="image" /> }
           {!loading && <img src="/assets/Grapes.png" alt="" style={style2} ref={this.getImage2} className="image" /> }
           <canvas className="webcam" ref={this.getCanvas} />
-          <Sketch setup={this.setup} draw={this.draw} />
+          {
+            !loading ? 
+            <Sketch setup={this.setup} draw={this.draw} />
+            :
+            null
+          }
         </div>
       </div>
     );
