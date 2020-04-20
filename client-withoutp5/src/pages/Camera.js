@@ -5,7 +5,7 @@ import { drawKeyPoints, drawSkeleton, config } from "../helpers";
 import { updateKeypoints, calibrate } from "../store/actions/keypoints";
 import Game from './Game';
 import Calibration from '../components/Calibration';
-
+import Countdown from '../components/StartCountdown';
 
 class PoseNet extends Component {
   static defaultProps = config;
@@ -207,11 +207,13 @@ class PoseNet extends Component {
           <canvas className="webcam" ref={this.getCanvas} />
           { !loading ? <Calibration /> : null }
           {
-            !loading ? 
-            <Game width={this.props.width} height={this.props.height} />
-            :
-            null
+            !loading
+              ? !Countdown
+                  ? <Game width={this.props.width} height={this.props.height} />
+                  : <Countdown />
+              : null
           }
+          <Game width={this.props.width} height={this.props.height} />
         </div>
       </div>
     );
