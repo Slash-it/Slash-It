@@ -1,3 +1,5 @@
 export const UPDATE_KEYPOINTS = 'UPDATE KEYPOINTS';
 export const CALIBRATE = 'CALIBRATE';
 export const GAMESTART = 'GAMESTART';
+export const KILLED_ITEM = 'KILLED ITEM';
+export const RESPAWN_ITEM = 'RESPAWN ITEM';

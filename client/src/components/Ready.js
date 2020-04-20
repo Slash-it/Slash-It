@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import './style/Ready.css'
+import './style/Ready.css';
 import { useSelector } from 'react-redux';
 
 const Ready = () => {
@@ -15,11 +15,12 @@ const Ready = () => {
   };
 
   React.useEffect(() => {
-    console.log('triggered');
-    timerId.current = setInterval(() => {
-      getCountdown();
-    }, 1010);
-  }, []);
+    if (calibrated.keypoints && !isGameStarted) {
+      timerId.current = setInterval(() => {
+        getCountdown();
+      }, 1000);
+    }
+  }, [calibrated, isGameStarted]);
 
   if (calibrated.keypoints && !isGameStarted) {
     if (countdown === 4) {
