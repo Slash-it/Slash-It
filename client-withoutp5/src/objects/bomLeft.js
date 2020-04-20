@@ -1,11 +1,12 @@
-class Fruit {
-    constructor(p5, boundary, gravity, vyRandomFactor) {
-        this.diameter = 50
+class Bomb {
+    constructor(p5, boundary) {
+        this.diameter = 65
+
         this.x = Math.random() * ( (boundary - 50) - 50 ) + 50
         this.y = p5.height + this.diameter
-        this.vy = Math.random() * (vyRandomFactor+3 - vyRandomFactor-3) + vyRandomFactor-3
-        this.vx = Math.random() * (2 - (-2)) + (-2)
-        this.gravity = gravity
+        this.vy = Math.random() * (18 - 12) + 12
+        this.vx = Math.random() * (2.5 - (-2.5)) + (-2.5)
+        this.gravity = 0.2
         this.isShown = true
         this.p5 = p5
         this.boundary = boundary
@@ -29,10 +30,10 @@ class Fruit {
 
     show() {
         if(this.isShown){
-            this.p5.fill(0, 255, 0)
+            this.p5.fill(0, 0, 255)
             this.p5.ellipse(this.x, this.y, this.diameter, this.diameter)
         }
     }
 }
 
-export default Fruit
+export default Bomb
