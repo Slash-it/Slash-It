@@ -5,7 +5,7 @@ import { drawKeyPoints, drawSkeleton, config } from "../helpers";
 import { updateKeypoints, calibrate } from "../store/actions/keypoints";
 import Game from './Game';
 import Calibration from '../components/Calibration';
-
+import Ready from '../components/Ready';
 
 class PoseNet extends Component {
   static defaultProps = config;
@@ -206,6 +206,7 @@ class PoseNet extends Component {
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />
           { !loading ? <Calibration /> : null }
+          { !loading ? <Ready /> : null }
           {
             !loading ? 
             <Game width={this.props.width} height={this.props.height} />

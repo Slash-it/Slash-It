@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { collideCircle, createHandKeypoint, findCoord } from '../helpers';
 
@@ -8,14 +8,15 @@ import FruitLeft from "../objects/fruitLeft";
 import FruitRight from "../objects/fruitRight";
 import BombLeft from "../objects/bomLeft";
 import BombRight from "../objects/bombRight";
+import { gameStart } from "../store/actions/keypoints";
 
 const music = new Audio('/assets/audio/GameBg.mp3');
 
 const Game = ({ width, height }) => {
+  const dispatch = useDispatch();
   const [fruits, setFruits] = useState([]);
-  const [time, setTime] = useState(10);
+  const [time, setTime] = useState(60);
   const [isTimerOn, setIsTimerOn] = useState(false);
-  const [isGameStarted, setIsGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   let timerId = useRef();
   const [bombs, setBombs] = useState([]);
@@ -48,6 +49,7 @@ const Game = ({ width, height }) => {
 
   const calibrated = useSelector((state) => state.keypoint.calibrated);
   const keypoints = useSelector((state) => state.keypoint.keypoints);
+  const isGameStarted = useSelector((state) => state.keypoint.isGameStarted);
 
   useEffect(() => {
     music.addEventListener('ended', function() {
@@ -70,47 +72,47 @@ const Game = ({ width, height }) => {
     if (!isTimerOn && !gameOver && isGameStarted ) {
       startTimer();
     }
-    const lShoulder = findCoord('leftShoulder', keypoints);
-    const rShoulder = findCoord('rightShoulder', keypoints);
-    // setBoundary(rShoulder.x - lShoulder.x);
-    console.log(rShoulder, 'r shoulder')
-    console.log(lShoulder, 'l shoulder')
-    setLBoundary(lShoulder.x - 120)
-    setRBoundary(rShoulder.x + 120)
-    const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(
-      keypoints
-    );
-  
-    if (letfHandKeypoints) {
-      for (let fruit of fruits) {
-        if (
-          collideCircle(
-            letfHandKeypoints.x,
-            letfHandKeypoints.y,
-            100,
-            fruit.x,
-            fruit.y,
-            fruit.diameter
-          )
-        ) {
-          fruit.unShow();
+
+    if (isGameStarted && !gameOver) {
+      const lShoulder = findCoord('leftShoulder', keypoints);
+      const rShoulder = findCoord('rightShoulder', keypoints);
+      setLBoundary(lShoulder.x - 120)
+      setRBoundary(rShoulder.x + 120)
+      const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(
+        keypoints
+      );
+
+      if (letfHandKeypoints) {
+        for (let fruit of fruits) {
+          if (
+            collideCircle(
+              letfHandKeypoints.x,
+              letfHandKeypoints.y,
+              100,
+              fruit.x,
+              fruit.y,
+              fruit.diameter
+            )
+          ) {
+            fruit.unShow();
+          }
         }
       }
-    }
-  
-    if (rightHandKeypoints) {
-      for (let fruit of fruits) {
-        if (
-          collideCircle(
-            rightHandKeypoints.x,
-            rightHandKeypoints.y,
-            100,
-            fruit.x,
-            fruit.y,
-            fruit.diameter
-          )
-        ) {
-          fruit.unShow();
+    
+      if (rightHandKeypoints) {
+        for (let fruit of fruits) {
+          if (
+            collideCircle(
+              rightHandKeypoints.x,
+              rightHandKeypoints.y,
+              100,
+              fruit.x,
+              fruit.y,
+              fruit.diameter
+            )
+          ) {
+            fruit.unShow();
+          }
         }
       }
     }
@@ -123,11 +125,14 @@ const Game = ({ width, height }) => {
   }, [keypoints, fruits, isTimerOn, startTimer, isGameStarted, gameOver, time]);
 
   useEffect(() => {
-    if (calibrated.keypoints) {
-      setIsGameStarted(true);
-      start();
+    if (calibrated.keypoints && !isGameStarted && !gameOver) {
+      setTimeout(() => {
+        dispatch(gameStart());
+      }, 4000)
     }
-  }, [calibrated, start]);
+
+    start();
+  }, [calibrated, start, isGameStarted, gameOver, dispatch]);
 
   // CANVAS P5 SETUP
   const setup = (p5, canvasParentRef) => {
@@ -184,8 +189,8 @@ const Game = ({ width, height }) => {
 
   return(
     <>
-    {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
-    {calibrated.keypoints ? <Sketch setup={setup} draw={draw} /> : null}
+    <h1 style={{ textAlign: 'center' }} >Time: {time}</h1>
+    {calibrated.keypoints && isGameStarted && !gameOver ? <Sketch setup={setup} draw={draw} /> : null}
     </>
   )
 

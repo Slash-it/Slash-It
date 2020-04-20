@@ -1,12 +1,14 @@
 import {
   UPDATE_KEYPOINTS,
-  CALIBRATE
+  CALIBRATE,
+  GAMESTART
 } from '../actions/action-types';
 
 const defaultState = {
   keypoints: [],
-  calibrated: {}
-}
+  calibrated: {},
+  isGameStarted: false,
+};
 
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -15,6 +17,9 @@ const reducer = (state = defaultState, action) => {
 
     case CALIBRATE:
       return { ...state, calibrated: action.pose };
+    
+    case GAMESTART:
+      return {...state, isGameStarted: action.bool};
   
     default:
       return state;

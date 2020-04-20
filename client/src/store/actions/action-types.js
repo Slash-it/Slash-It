@@ -1,2 +1,3 @@
 export const UPDATE_KEYPOINTS = 'UPDATE KEYPOINTS';
 export const CALIBRATE = 'CALIBRATE';
+export const GAMESTART = 'GAMESTART';
