@@ -2,11 +2,13 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import {
-  KeypointReducer
+  KeypointReducer,
+  ItemReducer,
 } from './reducers';
 
 const reducers = combineReducers({
-  keypoint: KeypointReducer
+  keypoint: KeypointReducer,
+  item: ItemReducer,
 });
 
 const store = createStore(reducers, applyMiddleware(thunk));
