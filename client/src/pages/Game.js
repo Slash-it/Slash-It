@@ -102,6 +102,7 @@ const Game = ({ width, height }) => {
           ) {
             fruit.unShow();
             dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
+            setScore(score + 100);
           }
         }
       }
@@ -121,6 +122,7 @@ const Game = ({ width, height }) => {
           ) {
             fruit.unShow();
             dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
+            setScore(score + 100);
           }
         }
       }
@@ -193,9 +195,9 @@ const Game = ({ width, height }) => {
       bomb.move()
     };
 
-    p5.noStroke();
-    
-    p5.fill(0, 0, 0);
+    p5.fill(255, 255, 255);
+    p5.stroke(0, 0, 0);
+    p5.strokeWeight(2);
     p5.textSize(36);
     p5.text(`SCORE: ${score}`, 50, 50);
     p5.text(`Time: ${time}`, p5.width - 200, 50);
