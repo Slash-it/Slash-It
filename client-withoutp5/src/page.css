@@ -138,7 +138,7 @@
 }
 
 .Body {
-  background-image: url('./assets/background2.png') ;
+  background-image: url('/assets/fruits/background2.png') ;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   min-height: 100vh;

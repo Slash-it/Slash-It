@@ -25,16 +25,3 @@ body {
   -webkit-transform: scaleX(-1);
   display: none !important;
 }
-
-.image {
-  animation-name: float;
-  animation-duration: 1.75s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: 50;
-  animation-direction: alternate;
-}
-
-@keyframes float{
-  from{ transform: translateY(740px) }
-  to{ transform: translateY(0px); }
-}
