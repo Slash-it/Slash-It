@@ -23,6 +23,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use('/',router)
 
-app.listen(port,()=>{
-    console.log('listening to port ' + port)
-})
+// app.listen(port,()=>{
+//     console.log('listening to port ' + port)
+// })
+
+module.exports = app
