@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
-import collideCircle from "../helpers/collideCircle";
-import { createHandKeypoint } from "../helpers/extend";
+
+import { collideCircle, createHandKeypoint, findCoord } from '../helpers';
+
 import Sketch from "react-p5";
 import FruitLeft from "../objects/fruitLeft";
 import FruitRight from "../objects/fruitRight";
@@ -12,6 +13,11 @@ const music = new Audio('/assets/audio/GameBg.mp3');
 
 const Game = ({ width, height }) => {
   const [fruits, setFruits] = useState([]);
+  const [time, setTime] = useState(10);
+  const [isTimerOn, setIsTimerOn] = useState(false);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  let timerId = useRef();
   const [bombs, setBombs] = useState([]);
   const [boundary, setBoundary] = useState(400);
   const [gameMode, setGameMode] = useState(2);
@@ -45,10 +51,26 @@ const Game = ({ width, height }) => {
     music.addEventListener('ended', function() {
       music.play();
     })
+    music.volume = 0.5;
     music.play();
   }, []);
 
-  const start = () => {
+  const countDown = () => {
+    setTime((time) => time - 1);
+  };
+
+  const startTimer = useCallback(() => {
+    setIsTimerOn(true);
+    timerId.current = setInterval(() => countDown(), 1000);
+  }, []);
+
+  const start = useCallback(() => {
+    if (!isTimerOn && !gameOver && isGameStarted ) {
+      startTimer();
+    }
+    const lShoulder = findCoord('leftShoulder', keypoints);
+    const rShoulder = findCoord('rightShoulder', keypoints);
+    setBoundary(rShoulder.x - lShoulder.x);
     const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(
       keypoints
     );
@@ -86,14 +108,22 @@ const Game = ({ width, height }) => {
         }
       }
     }
-  }
+
+    if (time <= 0) {
+      setGameOver(true);
+      clearInterval(timerId.current);
+    }
+
+  }, [keypoints, fruits, isTimerOn, startTimer, isGameStarted, gameOver, time]);
 
   useEffect(() => {
     if (calibrated.keypoints) {
+      setIsGameStarted(true);
       start();
     }
-  }, [calibrated, keypoints])
+  }, [calibrated, start]);
 
+  // CANVAS P5 SETUP
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(width, height).parent(canvasParentRef);
   }
@@ -148,6 +178,7 @@ const Game = ({ width, height }) => {
 
   return(
     <>
+    <h1 style={{ textAlign: 'center' }} >Time: {time}</h1>
     {calibrated.keypoints ? <Sketch setup={setup} draw={draw} /> : null}
     </>
   )
