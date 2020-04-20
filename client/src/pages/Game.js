@@ -10,12 +10,15 @@ import BombLeft from "../objects/bomLeft";
 import BombRight from "../objects/bombRight";
 import { gameStart } from "../store/actions/keypoints";
 
+import GameOver from '../components/GameOver';
+
 const music = new Audio('/assets/audio/GameBg.mp3');
 
 const Game = ({ width, height }) => {
   const dispatch = useDispatch();
   const [fruits, setFruits] = useState([]);
   const [time, setTime] = useState(60);
+  const [score, setScore] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   let timerId = useRef();
@@ -181,7 +184,11 @@ const Game = ({ width, height }) => {
     };
 
     p5.noStroke();
-    p5.fill(75, 75, 75, 100);
+    
+    p5.fill(0, 0, 0);
+    p5.textSize(36);
+    p5.text(`SCORE: ${score}`, 50, 50);
+    p5.text(`Time: ${time}`, p5.width - 200, 50);
 
     // p5.rect(0, 0, lBoundary, p5.height-5);
     // p5.rect(rBoundary, 0, rBoundary, p5.height-5);
@@ -189,8 +196,9 @@ const Game = ({ width, height }) => {
 
   return(
     <>
-    <h1 style={{ textAlign: 'center' }} >Time: {time}</h1>
+    {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
     {calibrated.keypoints && isGameStarted && !gameOver ? <Sketch setup={setup} draw={draw} /> : null}
+    { gameOver && <GameOver /> }
     </>
   )
 

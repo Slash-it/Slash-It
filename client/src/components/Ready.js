@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import './Ready.css'
+import './style/Ready.css'
 import { useSelector } from 'react-redux';
 
 const Ready = () => {
