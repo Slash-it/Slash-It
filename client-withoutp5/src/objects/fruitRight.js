@@ -1,7 +1,7 @@
 class Fruit {
     constructor(p5, boundary, gravity, vyRandomFactor) {
         this.diameter = 50
-        this.x = Math.random() * ( (p5.width - 50) - (p5.width - boundary + 50) ) + (p5.width - boundary + 50)
+        this.x = Math.random() * ( (p5.width - 50) - (boundary + 50) ) + (boundary + 50)
         this.y = p5.height + this.diameter
         this.vy = Math.random() * (vyRandomFactor+3 - vyRandomFactor-3) + vyRandomFactor-3
         this.vx = Math.random() * (2 - (-2)) + (-2)
@@ -13,14 +13,15 @@ class Fruit {
 
     move() {
         this.y -= this.vy
-        this.x += this.vx
+        // this.x += this.vx
         this.vy -= this.gravity
-        if( Math.abs( (this.p5.width - this.boundary) - this.x) <= this.diameter/2){
-            this.vx *= -1
-        }
-        if( Math.abs(this.p5.width - this.x) <= this.diameter/2 ){
-            this.vx *= -1
-        }
+        //Memantulkan
+        // if( Math.abs( (this.p5.width - this.boundary) - this.x) <= this.diameter/2){
+        //     this.vx *= -1
+        // }
+        // if( Math.abs(this.p5.width - this.x) <= this.diameter/2 ){
+        //     this.vx *= -1
+        // }
     }
 
     unShow(){

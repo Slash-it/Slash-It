@@ -13,14 +13,15 @@ class Fruit {
 
     move() {
         this.y -= this.vy
-        this.x += this.vx
+        // this.x += this.vx
         this.vy -= this.gravity
-        if( Math.abs(this.boundary - this.x) <= this.diameter/2){
-            this.vx *= -1
-        }
-        if( Math.abs(0 - this.x) <= this.diameter/2 ){
-            this.vx *= -1
-        }
+        // Memantulkan
+        // if( Math.abs(this.boundary - this.x) <= this.diameter/2){
+        //     this.vx *= -1
+        // }
+        // if( Math.abs(0 - this.x) <= this.diameter/2 ){
+        //     this.vx *= -1
+        // }
     }
 
     unShow(){

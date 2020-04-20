@@ -14,14 +14,14 @@ class Bomb {
 
     move() {
         this.y -= this.vy
-        this.x += this.vx
+        // this.x += this.vx
         this.vy -= this.gravity
-        if( Math.abs( (this.p5.width - this.boundary) - this.x) <= this.diameter/2){
-            this.vx *= -1
-        }
-        if( Math.abs(this.p5.width - this.x) <= this.diameter/2 ){
-            this.vx *= -1
-        }
+        // if( Math.abs( (this.p5.width - this.boundary) - this.x) <= this.diameter/2){
+        //     this.vx *= -1
+        // }
+        // if( Math.abs(this.p5.width - this.x) <= this.diameter/2 ){
+        //     this.vx *= -1
+        // }
     }
 
     unShow(){
