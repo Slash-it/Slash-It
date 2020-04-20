@@ -20,7 +20,9 @@ const Game = ({ width, height }) => {
   let timerId = useRef();
   const [bombs, setBombs] = useState([]);
   const [boundary, setBoundary] = useState(400);
-  const [gameMode, setGameMode] = useState(2);
+  const [lBoundary, setLBoundary] = useState(0);
+  const [rBoundary, setRBoundary] = useState(0);
+  const [gameMode, setGameMode] = useState(1);
   const [gameConfig, setGameConfig] = useState(
     [
       {
@@ -51,7 +53,7 @@ const Game = ({ width, height }) => {
     music.addEventListener('ended', function() {
       music.play();
     })
-    music.volume = 0.5;
+    music.volume = 0.2;
     music.play();
   }, []);
 
@@ -70,7 +72,11 @@ const Game = ({ width, height }) => {
     }
     const lShoulder = findCoord('leftShoulder', keypoints);
     const rShoulder = findCoord('rightShoulder', keypoints);
-    setBoundary(rShoulder.x - lShoulder.x);
+    // setBoundary(rShoulder.x - lShoulder.x);
+    console.log(rShoulder, 'r shoulder')
+    console.log(lShoulder, 'l shoulder')
+    setLBoundary(lShoulder.x - 120)
+    setRBoundary(rShoulder.x + 120)
     const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(
       keypoints
     );
@@ -133,7 +139,7 @@ const Game = ({ width, height }) => {
     if(Math.random() >= gameConfig[gameMode].fruitTriggerConstant){
       setFruits([...fruits, new FruitLeft(
         p5, 
-        boundary, 
+        lBoundary, 
         gameConfig[gameMode].gravity, 
         gameConfig[gameMode].vyRandomFactor,
       )]);
@@ -141,7 +147,7 @@ const Game = ({ width, height }) => {
     if(Math.random() >= gameConfig[gameMode].fruitTriggerConstant){
       setFruits([...fruits, new FruitRight(
         p5, 
-        boundary, 
+        rBoundary, 
         gameConfig[gameMode].gravity, 
         gameConfig[gameMode].vyRandomFactor,
       )]);
@@ -171,14 +177,14 @@ const Game = ({ width, height }) => {
 
     p5.noStroke();
     p5.fill(75, 75, 75, 100);
-    
-    p5.rect(0, 0, boundary, p5.height-5);
-    p5.rect(p5.width - boundary, 0, boundary, p5.height-5);
+
+    p5.rect(0, 0, lBoundary, p5.height-5);
+    p5.rect(rBoundary, 0, rBoundary, p5.height-5);
   }
 
   return(
     <>
-    <h1 style={{ textAlign: 'center' }} >Time: {time}</h1>
+    {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
     {calibrated.keypoints ? <Sketch setup={setup} draw={draw} /> : null}
     </>
   )

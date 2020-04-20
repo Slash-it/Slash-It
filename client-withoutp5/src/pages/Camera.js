@@ -161,7 +161,7 @@ class PoseNet extends Component {
       }
 
       if (!this.props.calibrated.keypoints && poses[0]) {
-        if (poses[0].keypoints[1].score > minPartConfidence && poses[0].keypoints[11].score > minPartConfidence && poses[0].keypoints[13].score > minPartConfidence) {
+        if (poses[0].keypoints[1].score > minPartConfidence && poses[0].keypoints[11].score > minPartConfidence) {
           console.log('CALIBRATED!!!!');
           this.props.calibrate(poses[0]);
         }
