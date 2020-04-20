@@ -15,11 +15,12 @@ const Ready = () => {
   };
 
   React.useEffect(() => {
-    console.log('triggered');
-    timerId.current = setInterval(() => {
-      getCountdown();
-    }, 1010);
-  }, []);
+    if (calibrated.keypoints && !isGameStarted) {
+      timerId.current = setInterval(() => {
+        getCountdown();
+      }, 1000);
+    }
+  }, [calibrated, isGameStarted]);
 
   if (calibrated.keypoints && !isGameStarted) {
     if (countdown === 4) {

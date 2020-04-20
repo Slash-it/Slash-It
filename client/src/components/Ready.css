@@ -4,7 +4,7 @@
   text-align: center;
   margin: 0;
   position: absolute;
-  top: 50%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
   animation: zoom-in 1s linear 0s infinite;
