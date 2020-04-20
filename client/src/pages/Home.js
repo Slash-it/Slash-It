@@ -13,13 +13,14 @@ function Home() {
   const history = useHistory();
   return (
     <div className="Body">
-      <img src={strawberry} className="strawberry rotate" alt="fruit" />
+      {/* <img src={strawberry} className="strawberry rotate" alt="fruit" /> */}
       <img src={grapes} className="grapes rotatereverse" alt="fruit" />
       <img src={banana} className="banana rotate" alt="fruit" />
       <img src={orange} className="orange rotatereverse" alt="fruit" />
       <div className="center">
         <div className="bounce">
           <h3>Welcome to Slash-It !</h3>
+          {/* <img src="/assets/HomeLogo.png" height='300px' width='auto' alt="" /> */}
           <div className="btn btn-danger">
             <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/game')}>Play Now</h4>
           </div>

@@ -183,8 +183,8 @@ const Game = ({ width, height }) => {
     p5.noStroke();
     p5.fill(75, 75, 75, 100);
 
-    p5.rect(0, 0, lBoundary, p5.height-5);
-    p5.rect(rBoundary, 0, rBoundary, p5.height-5);
+    // p5.rect(0, 0, lBoundary, p5.height-5);
+    // p5.rect(rBoundary, 0, rBoundary, p5.height-5);
   }
 
   return(

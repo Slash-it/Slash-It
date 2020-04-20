@@ -9,6 +9,7 @@
   transform: translate(-50%, -50%);
   animation: zoom-in 1s linear 0s infinite;
 }
+
 @keyframes zoom-in {
   0% {
       transform: scaleX(10) scaleY(10);
