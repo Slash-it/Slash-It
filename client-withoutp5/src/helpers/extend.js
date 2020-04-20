@@ -18,6 +18,12 @@ const bodyPartIndex = {
   rightAnkle: 16
 };
 
+export const findCoord = (bodypart, keypoints) => {
+  const index = bodyPartIndex[bodypart];
+  const coord = keypoints[index].position;
+  return coord;
+};
+
 export const createHandKeypoint = (keypoints) => {
   const leftWristIndex = bodyPartIndex['leftWrist'];
   const leftElbowIndex = bodyPartIndex['leftElbow'];

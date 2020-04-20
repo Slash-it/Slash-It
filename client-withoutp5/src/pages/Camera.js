@@ -234,22 +234,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const style = {
-  position: 'absolute',
-  top: 100,
-  left: 100,
-  width: 150,
-  height: 150,
-  zIndex: 888
-}
-
-const style2 = {
-  position: 'absolute',
-  top: 100,
-  right: 100,
-  width: 150,
-  height: 150,
-  zIndex: 888
-}
-
 export default connect(mapStateToProps, mapDispatchToProps)(PoseNet);
