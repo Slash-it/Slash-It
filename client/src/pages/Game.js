@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { collideCircle, createHandKeypoint, findCoord } from '../helpers';
+import { collideCircle, createHandKeypoint, findCoord } from "../helpers";
 
 import Sketch from "react-p5";
 import FruitLeft from "../objects/fruitLeft";
@@ -10,11 +10,12 @@ import BombLeft from "../objects/bomLeft";
 import BombRight from "../objects/bombRight";
 import { gameStart } from "../store/actions/keypoints";
 
-import GameOver from '../components/GameOver';
+import GameOver from "../components/GameOver";
 import FloatingScores from "../components/FloatingScores";
 import { showFloatingScore } from "../store/actions/floatingScores";
 
-const music = new Audio('/assets/audio/GameBg.mp3');
+const music = new Audio("/assets/audio/GameBg.mp3");
+const squish = new Audio("/assets/audio/squish.mp3");
 let fruitImageActive = [];
 let fruitImageExplode = [];
 let bombImageActive;
@@ -29,44 +30,43 @@ const Game = ({ width, height }) => {
   const [score, setScore] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [gamePaused, setGamePause] = useState(false);
+  const [timerPaused, setTimerPaused] = useState(0);
   let timerId = useRef();
   const [bombs, setBombs] = useState([]);
-  const [boundary, setBoundary] = useState(400);
   const [lBoundary, setLBoundary] = useState(0);
   const [rBoundary, setRBoundary] = useState(0);
   const [gameMode, setGameMode] = useState(0);
-  const [gameConfig, setGameConfig] = useState(
-    [
-      {
-        fruitTriggerConstant: 0.98,
-        bombTriggerConstant: 0.995,
-        vyRandomFactor: 15,
-        gravity: 0.15
-      },
-      {
-        fruitTriggerConstant: 0.97,
-        bombTriggerConstant: 0.99,
-        vyRandomFactor: 20,
-        gravity: 0.3
-      },
-      {
-        fruitTriggerConstant: 0.96,
-        bombTriggerConstant: 0.99,
-        vyRandomFactor: 24,
-        gravity: 0.4
-      }
-    ]
-  );
+  const [gameConfig, setGameConfig] = useState([
+    {
+      fruitTriggerConstant: 0.98,
+      bombTriggerConstant: 0.995,
+      vyRandomFactor: 15,
+      gravity: 0.15,
+    },
+    {
+      fruitTriggerConstant: 0.97,
+      bombTriggerConstant: 0.99,
+      vyRandomFactor: 20,
+      gravity: 0.3,
+    },
+    {
+      fruitTriggerConstant: 0.96,
+      bombTriggerConstant: 0.99,
+      vyRandomFactor: 24,
+      gravity: 0.4,
+    },
+  ]);
 
   const calibrated = useSelector((state) => state.keypoint.calibrated);
   const keypoints = useSelector((state) => state.keypoint.keypoints);
   const isGameStarted = useSelector((state) => state.keypoint.isGameStarted);
-  const fruitImages = useSelector((state) => state.item.fruits)
+  const fruitImages = useSelector((state) => state.item.fruits);
 
   useEffect(() => {
-    music.addEventListener('ended', function() {
+    music.addEventListener("ended", function () {
       music.play();
-    })
+    });
     music.volume = 0.2;
     music.play();
   }, []);
@@ -81,15 +81,15 @@ const Game = ({ width, height }) => {
   }, []);
 
   const start = useCallback(() => {
-    if (!isTimerOn && !gameOver && isGameStarted ) {
+    if (!isTimerOn && !gameOver && isGameStarted) {
       startTimer();
     }
 
     if (isGameStarted && !gameOver) {
-      const lShoulder = findCoord('leftShoulder', keypoints);
-      const rShoulder = findCoord('rightShoulder', keypoints);
-      setLBoundary(lShoulder.x - 120)
-      setRBoundary(rShoulder.x + 120)
+      const lShoulder = findCoord("leftShoulder", keypoints);
+      const rShoulder = findCoord("rightShoulder", keypoints);
+      setLBoundary(lShoulder.x - 120);
+      setRBoundary(rShoulder.x + 120);
       const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(
         keypoints
       );
@@ -104,12 +104,13 @@ const Game = ({ width, height }) => {
               fruit.x,
               fruit.y,
               fruit.diameter
-            )
-            && fruit.isShown
+            ) &&
+            fruit.isShown
           ) {
-            if(!fruit.isDestroyed){
+            if (!fruit.isDestroyed) {
               dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
               setScore(score + 100);
+              squish.play();
             }
             fruit.destroy();
           }
@@ -126,7 +127,7 @@ const Game = ({ width, height }) => {
               bomb.diameter
             )
           ) {
-            if(!bomb.isDestroyed){
+            if (!bomb.isDestroyed) {
               dispatch(showFloatingScore(`-100`, bomb.x, bomb.y));
               setScore(score - 100);
             }
@@ -134,7 +135,7 @@ const Game = ({ width, height }) => {
           }
         }
       }
-    
+
       if (rightHandKeypoints) {
         for (let fruit of fruits) {
           if (
@@ -145,12 +146,13 @@ const Game = ({ width, height }) => {
               fruit.x,
               fruit.y,
               fruit.diameter
-            )
-            && fruit.isShown
+            ) &&
+            fruit.isShown
           ) {
-            if(!fruit.isDestroyed){
+            if (!fruit.isDestroyed) {
               dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
               setScore(score + 100);
+              squish.play();
             }
             fruit.destroy();
           }
@@ -167,7 +169,7 @@ const Game = ({ width, height }) => {
               bomb.diameter
             )
           ) {
-            if(!bomb.isDestroyed){
+            if (!bomb.isDestroyed) {
               dispatch(showFloatingScore(`-100`, bomb.x, bomb.y));
               setScore(score - 100);
             }
@@ -183,14 +185,13 @@ const Game = ({ width, height }) => {
       setGameOver(true);
       clearInterval(timerId.current);
     }
-
-  }, [keypoints, fruits, isTimerOn, startTimer, isGameStarted, gameOver, time]);
+  }, [keypoints, fruits, isTimerOn, startTimer, isGameStarted, gameOver, time, bombs, dispatch, score, gamePaused]);
 
   useEffect(() => {
     if (calibrated.keypoints && !isGameStarted && !gameOver) {
       setTimeout(() => {
         dispatch(gameStart());
-      }, 4000)
+      }, 4000);
     }
 
     start();
@@ -198,10 +199,10 @@ const Game = ({ width, height }) => {
 
   // CANVAS P5 PRELOAD
   const preload = (p5) => {
-    p5.Fredoka = p5.loadFont('/assets/FredokaOne-Regular.ttf')
-    for(let i=0; i<fruitImages.length; i++){
-      fruitImageActive.push( p5.loadImage( fruitImages[i].activeUrl ) )
-      fruitImageExplode.push( p5.loadImage( fruitImages[i].explodeUrl ) )
+    p5.Fredoka = p5.loadFont("/assets/FredokaOne-Regular.ttf");
+    for (let i = 0; i < fruitImages.length; i++) {
+      fruitImageActive.push(p5.loadImage(fruitImages[i].activeUrl));
+      fruitImageExplode.push(p5.loadImage(fruitImages[i].explodeUrl));
     }
 
     bombImageActive = p5.loadImage( "/assets/bombs/bomb.png" )
@@ -210,6 +211,7 @@ const Game = ({ width, height }) => {
     pauseButton = p5.loadImage( "/assets/buttons/pause.png" )
     playButton = p5.loadImage( "/assets/buttons/play.png" )
   }
+
 
   // CANVAS P5 SETUP
   const setup = (p5, canvasParentRef) => {
@@ -261,19 +263,19 @@ const Game = ({ width, height }) => {
     for(let fruit of fruits){
       fruit.show()
       //if (fruit.isShown) {
-        fruit.move()
+      fruit.move();
       //}
-    };
+    }
 
-    for(let bomb of bombs){
-      bomb.show()
-      bomb.move()
-    };
+    for (let bomb of bombs) {
+      bomb.show();
+      bomb.move();
+    }
 
     p5.noStroke();
-    
+
     p5.fill(0, 0, 0);
-    p5.textFont(p5.Fredoka)
+    p5.textFont(p5.Fredoka);
 
     p5.textSize(36);
     p5.text(`SCORE: ${score}`, 50, 50);
@@ -287,17 +289,20 @@ const Game = ({ width, height }) => {
 
     // p5.rect(0, 0, lBoundary, p5.height-5);
     // p5.rect(rBoundary, 0, rBoundary, p5.height-5);
-  }
+  };
 
-  return(
+  return (
     <>
-    {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
-    {calibrated.keypoints && isGameStarted && !gameOver ? <Sketch preload={preload} setup={setup} draw={draw} /> : null}
-    <FloatingScores/>
-    { gameOver && <GameOver /> }
+      {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
+      {calibrated.keypoints && isGameStarted && !gameOver ? (
+        <>
+        <Sketch preload={preload} setup={setup} draw={draw} />
+        </>
+      ) : null}
+      <FloatingScores />
+      {gameOver && <GameOver />}
     </>
-  )
-
+  );
 };
 
 export default Game;

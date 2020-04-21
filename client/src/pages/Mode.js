@@ -33,7 +33,7 @@ function Mode(){
             <div className='center'>
                 <div className="bounce">
                     <h4>Pick Your Username !</h4>
-                    <input class="form-control-lg mt-3 mb-3" type="text" placeholder="Username"></input>
+                    <input className="form-control-lg mt-3 mb-3" type="text" placeholder="Username"></input>
                     <br></br>
                     <h4>Choose The Level !</h4>
                     <div className='d-flex row'>
