@@ -25,7 +25,7 @@ const PauseCounter = () => {
   }, [readyToPause, gamePaused]);
 
   useEffect(() => {
-    return () => clearInterval(timerId);
+    return () => clearInterval(timerId.current);
   }, [])
 
   if (readyToPause && !gamePaused) {

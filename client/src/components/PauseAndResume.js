@@ -23,7 +23,7 @@ const PauseAndResume = () => {
   }, [readyToResume]);
 
   useEffect(() => {
-    return () => clearInterval(timerId);
+    return () => clearInterval(timerId.current);
   }, []);
 
   if (readyToResume) {

@@ -115,6 +115,8 @@ const Game = ({ width, height }) => {
           )
         ) {
           dispatch(startResumeCounter(true));
+          setTime(timerPaused);
+          startTimer();
         } else if (
           collideCircle(
             letfHandKeypoints.x,
@@ -126,6 +128,8 @@ const Game = ({ width, height }) => {
           )
         ) {
           dispatch(startResumeCounter(true));
+          setTime(timerPaused);
+          startTimer();
         }
       }
 
@@ -141,6 +145,8 @@ const Game = ({ width, height }) => {
           )
         ) {
           dispatch(startPauseCounter(true));
+          clearInterval(timerId.current);
+          setTimerPaused(time);
         }
 
         for (let fruit of fruits) {
@@ -197,6 +203,8 @@ const Game = ({ width, height }) => {
           )
         ) {
           dispatch(startPauseCounter(true));
+          clearInterval(timerId.current)
+          setTimerPaused(time);
         }
 
         for (let fruit of fruits) {
