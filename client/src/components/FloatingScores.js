@@ -7,7 +7,7 @@ const FloatingScores = () => {
 
     return <>
         {floatingScores.map((fs, index) => {
-            return <div className="floating-score" style={{ left: fs.x, top: fs.y }} key={fs.timestamp}>
+            return <div className="floating-score" style={{ left: fs.x, top: fs.y }} key={index}>
                 <div>{fs.text}</div>
             </div>
         })}
