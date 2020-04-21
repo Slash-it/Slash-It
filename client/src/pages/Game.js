@@ -11,9 +11,15 @@ import BombRight from "../objects/bombRight";
 
 import GameOver from "../components/GameOver";
 import FloatingScores from "../components/FloatingScores";
-import PauseCounter from '../components/PauseCounter';
+import PauseCounter from "../components/PauseCounter";
+import PauseAndResume from '../components/PauseAndResume';
 
-import { gameStart, startPauseCounter } from "../store/actions/keypoints";
+import {
+  gameStart,
+  startPauseCounter,
+  resumeGame,
+  startResumeCounter,
+} from "../store/actions/keypoints";
 import { showFloatingScore } from "../store/actions/floatingScores";
 
 const music = new Audio("/assets/audio/GameBg.mp3");
@@ -97,10 +103,44 @@ const Game = ({ width, height }) => {
         keypoints
       );
 
-      if (letfHandKeypoints) {
-        if (collideCircle(letfHandKeypoints.x, letfHandKeypoints.y, 100, 720, 50, 50)) {
-          console.log('pause clicked');
-          dispatch(startPauseCounter());
+      if (gamePaused) {
+        if (
+          collideCircle(
+            letfHandKeypoints.x,
+            letfHandKeypoints.y,
+            100,
+            720,
+            50,
+            50
+          )
+        ) {
+          dispatch(startResumeCounter(true));
+        } else if (
+          collideCircle(
+            letfHandKeypoints.x,
+            letfHandKeypoints.y,
+            100,
+            720,
+            50,
+            50
+          )
+        ) {
+          dispatch(startResumeCounter(true));
+        }
+      }
+
+      if (letfHandKeypoints && !gamePaused) {
+        if (
+          collideCircle(
+            letfHandKeypoints.x,
+            letfHandKeypoints.y,
+            100,
+            720,
+            50,
+            50
+          )
+        ) {
+          dispatch(startPauseCounter(true));
         }
 
         for (let fruit of fruits) {
@@ -145,7 +185,20 @@ const Game = ({ width, height }) => {
         }
       }
 
-      if (rightHandKeypoints) {
+      if (rightHandKeypoints && !gamePaused) {
+        if (
+          collideCircle(
+            rightHandKeypoints.x,
+            rightHandKeypoints.y,
+            100,
+            720,
+            50,
+            50
+          )
+        ) {
+          dispatch(startPauseCounter(true));
+        }
+
         for (let fruit of fruits) {
           if (
             collideCircle(
@@ -195,17 +248,29 @@ const Game = ({ width, height }) => {
       setGameOver(true);
       clearInterval(timerId.current);
     }
-  }, [keypoints, fruits, isTimerOn, startTimer, isGameStarted, gameOver, time, bombs, dispatch, score, gamePaused]);
+  }, [
+    keypoints,
+    fruits,
+    isTimerOn,
+    startTimer,
+    isGameStarted,
+    gameOver,
+    time,
+    bombs,
+    dispatch,
+    score,
+    gamePaused,
+  ]);
 
   useEffect(() => {
-    if (calibrated.keypoints && !isGameStarted && !gameOver) {
+    if (calibrated.keypoints && !isGameStarted && !gameOver && !gamePaused) {
       setTimeout(() => {
         dispatch(gameStart());
       }, 4000);
     }
 
     start();
-  }, [calibrated, start, isGameStarted, gameOver, dispatch]);
+  }, [calibrated, start, isGameStarted, gameOver, dispatch, gamePaused]);
 
   // CANVAS P5 PRELOAD
   const preload = (p5) => {
@@ -215,63 +280,68 @@ const Game = ({ width, height }) => {
       fruitImageExplode.push(p5.loadImage(fruitImages[i].explodeUrl));
     }
 
-    bombImageActive = p5.loadImage( "/assets/bombs/bomb.png" )
-    bombImageExplode = p5.loadImage( "/assets/bombs/bombExplode.png" )
+    bombImageActive = p5.loadImage("/assets/bombs/bomb.png");
+    bombImageExplode = p5.loadImage("/assets/bombs/bombExplode.png");
 
-    pauseButton = p5.loadImage( "/assets/buttons/pause.png" )
-    playButton = p5.loadImage( "/assets/buttons/play.png" )
-  }
-
+    pauseButton = p5.loadImage("/assets/buttons/pause.png");
+    playButton = p5.loadImage("/assets/buttons/play.png");
+  };
 
   // CANVAS P5 SETUP
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(width, height).parent(canvasParentRef);
-    p5.angleMode(p5.DEGREES)
-  }
+    p5.angleMode(p5.DEGREES);
+  };
 
   const draw = (p5) => {
-    p5.clear()
-    if(Math.random() >= gameConfig[gameMode].fruitTriggerConstant){
-      let randIntL = Math.floor( Math.random() * ( (fruitImageActive.length - 1) - 0) + 0 )
-      setFruits([...fruits, new FruitLeft(
-        p5, 
-        lBoundary, 
-        gameConfig[gameMode].gravity, 
-        gameConfig[gameMode].vyRandomFactor,
-        fruitImageActive[randIntL],
-        fruitImageExplode[randIntL],
-      )]);
-    };
-    if(Math.random() >= gameConfig[gameMode].fruitTriggerConstant){
-      let randIntR = Math.floor( Math.random() * ( (fruitImageActive.length - 1) - 0) + 0 )
-      setFruits([...fruits, new FruitRight(
-        p5, 
-        rBoundary, 
-        gameConfig[gameMode].gravity, 
-        gameConfig[gameMode].vyRandomFactor,
-        fruitImageActive[randIntR],
-        fruitImageExplode[randIntR],
-      )]);
-    };
-    if(Math.random() >= gameConfig[gameMode].bombTriggerConstant){
-      setBombs([...bombs, new BombLeft(
-        p5,
-        lBoundary,
-        bombImageActive,
-        bombImageExplode,
-      )]);
-    };
-    if(Math.random() >= gameConfig[gameMode].bombTriggerConstant){
-      setBombs([...bombs, new BombRight(
-        p5,
-        rBoundary,
-        bombImageActive,
-        bombImageExplode,
-      )]);
-    };
-    
-    for(let fruit of fruits){
-      fruit.show()
+    p5.clear();
+    if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
+      let randIntL = Math.floor(
+        Math.random() * (fruitImageActive.length - 1 - 0) + 0
+      );
+      setFruits([
+        ...fruits,
+        new FruitLeft(
+          p5,
+          lBoundary,
+          gameConfig[gameMode].gravity,
+          gameConfig[gameMode].vyRandomFactor,
+          fruitImageActive[randIntL],
+          fruitImageExplode[randIntL]
+        ),
+      ]);
+    }
+    if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
+      let randIntR = Math.floor(
+        Math.random() * (fruitImageActive.length - 1 - 0) + 0
+      );
+      setFruits([
+        ...fruits,
+        new FruitRight(
+          p5,
+          rBoundary,
+          gameConfig[gameMode].gravity,
+          gameConfig[gameMode].vyRandomFactor,
+          fruitImageActive[randIntR],
+          fruitImageExplode[randIntR]
+        ),
+      ]);
+    }
+    if (Math.random() >= gameConfig[gameMode].bombTriggerConstant) {
+      setBombs([
+        ...bombs,
+        new BombLeft(p5, lBoundary, bombImageActive, bombImageExplode),
+      ]);
+    }
+    if (Math.random() >= gameConfig[gameMode].bombTriggerConstant) {
+      setBombs([
+        ...bombs,
+        new BombRight(p5, rBoundary, bombImageActive, bombImageExplode),
+      ]);
+    }
+
+    for (let fruit of fruits) {
+      fruit.show();
       //if (fruit.isShown) {
       fruit.move();
       //}
@@ -291,11 +361,11 @@ const Game = ({ width, height }) => {
     p5.text(`SCORE: ${score}`, 50, 50);
     p5.text(`Time: ${time}`, p5.width - 200, 50);
 
-    p5.push()
-      p5.translate(p5.width/2, 50)
-      p5.imageMode(p5.CENTER)
-      p5.image(pauseButton, 0, 0, 50, 50)
-    p5.pop()
+    p5.push();
+    p5.translate(p5.width / 2, 50);
+    p5.imageMode(p5.CENTER);
+    p5.image(pauseButton, 0, 0, 50, 50);
+    p5.pop();
 
     // p5.rect(0, 0, lBoundary, p5.height-5);
     // p5.rect(rBoundary, 0, rBoundary, p5.height-5);
@@ -306,12 +376,13 @@ const Game = ({ width, height }) => {
       {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
       {calibrated.keypoints && isGameStarted && !gameOver ? (
         <>
-        <Sketch preload={preload} setup={setup} draw={draw} />
+          <Sketch preload={preload} setup={setup} draw={draw} />
         </>
       ) : null}
       <FloatingScores />
       {gameOver && <GameOver />}
       <PauseCounter />
+      <PauseAndResume />
     </>
   );
 };

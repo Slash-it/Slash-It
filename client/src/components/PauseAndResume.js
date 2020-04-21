@@ -1,12 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import './style/Ready.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { pauseGame, startPauseCounter } from '../store/actions/keypoints';
+import { resumeGame, startResumeCounter } from '../store/actions/keypoints';
 
-const PauseCounter = () => {
+const PauseAndResume = () => {
   const dispatch = useDispatch();
-  const readyToPause = useSelector((state) => state.keypoint.readyToPause);
-  const gamePaused = useSelector((state) => state.keypoint.gamePaused);
+  const readyToResume = useSelector((state) => state.keypoint.readyToResume);
   const [countdown, setCountdown] = React.useState(4);
   let timerId = useRef();
 
@@ -17,30 +15,30 @@ const PauseCounter = () => {
   };
 
   React.useEffect(() => {
-    if (readyToPause && !gamePaused) {
+    if (readyToResume) {
       timerId.current = setInterval(() => {
         getCountdown();
       }, 1000);
     }
-  }, [readyToPause, gamePaused]);
+  }, [readyToResume]);
 
   useEffect(() => {
     return () => clearInterval(timerId);
-  }, [])
+  }, []);
 
-  if (readyToPause && !gamePaused) {
+  if (readyToResume) {
     if (countdown === 4) {
       return (
         <>
         <div className="countdown">
-          <h1>PAUSE IN </h1>
+          <h1>RESUMING IN</h1>
           </div>
         </>
       );
     } else if (countdown === 0) {
       clearInterval(timerId.current);
-      dispatch(pauseGame());
-      dispatch(startPauseCounter(false));
+      dispatch(resumeGame());
+      dispatch(startResumeCounter(false));
     } else {
       return ( 
       <>
@@ -55,4 +53,4 @@ const PauseCounter = () => {
   }
 };
 
-export default PauseCounter;
+export default PauseAndResume;
