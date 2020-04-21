@@ -561,3 +561,371 @@ h4{
   bottom: 2%;
 }
 
+/* About Page */
+
+.TitleAbout{
+  position: absolute;
+  top: 5%;
+  left: 0%;
+  right: 0%;
+}
+
+.LogoImage{
+  position: absolute;
+  top: 10%;
+  left: 0%;
+  right: 0%;
+}
+
+.LogoImage img{
+  width: 10%;
+  height: 10%;
+}
+
+.DescriptionText{
+  position: absolute;
+  top: 23%;
+  left: 25%;
+  right: 0%;
+  width: 50%;
+}
+
+.DescriptionText p{
+  font-family: 'courier';
+  font-size: 20px;
+}
+
+.TheCreator{
+  position: absolute;
+  top: 34%;
+  left: 0%;
+  right: 0%;
+}
+
+.Footer{
+  position: absolute;
+  bottom: 1%;
+  left: 0%;
+  right: 0%;
+}
+
+.HomeButton{
+  position: absolute;
+  bottom: 6%;
+  left: 0%;
+  right: 0%;
+}
+
+.BodyAbout {
+  position: relative;
+  background-image: url('/assets/fruits/background.png') ;
+  background-repeat: repeat;
+  min-height: 1700px;
+  min-width: 100%; 
+  font-size: calc(10px + 2vmin);
+  color: white;
+  text-align: center;
+  z-index: 2;
+}
+
+.center {
+  text-align: center;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 25px;
+}
+
+.left {
+  left: 25px;
+}
+
+.right {
+  right: 25px;
+}
+
+.cardtext{
+  margin-top: 29px;
+}
+
+/* profile 1 */
+
+#gradient {
+  position: absolute;
+  background: #999955;
+  background-image: linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
+  top: 750px;
+  width: 100%;
+  height: 150px;
+}
+
+#gradient:after {
+  content: "";
+  position: absolute;
+  background: #E9E2D0;
+  left: 10%;
+  margin-top: -67.5px;
+  margin-right: -270px;
+  padding-left: 20px;
+  border-radius: 5px;
+  width: 520px;
+  height: 275px;
+  z-index: -1;
+}
+
+#card {
+  position: absolute;
+  width: 450px;
+  height: 240px;
+  padding: 25px;
+  padding-top: 0;
+  padding-bottom: 0;
+  left: 26%;
+  top: 700px;
+  margin-left: -250px;
+  background: #E9E2D0;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
+  z-index: 5;
+}
+
+#card img {
+  width: 150px;
+  float: left;
+  top: -30px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+#card h2 {
+  font-family: courier;
+  color: #333;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 15pt;
+  text-align: left;
+}
+
+#card p {
+  text-align: left;
+  font-family: courier;
+  color: #555;
+  font-size: 13px;
+}
+
+#card span {
+  font-family: courier;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/*Profile 2*/
+#gradient2 {
+  position: absolute;
+  background: #999955;
+  background-image: linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
+  top: 750px;
+  width: 100%;
+  height: 150px;
+}
+
+#gradient2:after {
+  content: "";
+  position: absolute;
+  background: #E9E2D0;
+  right: 10%;
+  margin-top: -67.5px;
+  margin-left: -270px;
+  padding-left: 20px;
+  border-radius: 5px;
+  width: 520px;
+  height: 275px;
+  z-index: -1;
+}
+
+#card2 {
+  position: absolute;
+  width: 450px;
+  height: 240px;
+  padding: 25px;
+  padding-top: 0;
+  padding-bottom: 0;
+  right: 12%;
+  top: 700px;
+  margin-left: -250px;
+  background: #E9E2D0;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
+  z-index: 5;
+}
+
+#card2 img {
+  width: 150px;
+  float: left;
+  margin-top: 20px;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+#card2 h2 {
+  text-align: left;
+  font-family: courier;
+  color: #333;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 15pt;
+}
+
+#card2 p {
+  text-align: left;
+  font-family: courier;
+  color: #555;
+  font-size: 13px;
+}
+
+#card2 span {
+  font-family: courier;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Profile 3 */
+#gradient3 {
+  position: absolute;
+  background: #999955;
+  background-image: linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
+  top: 1150px;
+  width: 100%;
+  height: 150px;
+}
+
+#gradient3:after {
+  content: "";
+  position: absolute;
+  background: #E9E2D0;
+  left: 10%;
+  margin-top: -67.5px;
+  margin-right: -270px;
+  padding-left: 20px;
+  border-radius: 5px;
+  width: 520px;
+  height: 275px;
+  z-index: -1;
+}
+
+#card3 {
+  position: absolute;
+  width: 450px;
+  height: 240px;
+  padding: 25px;
+  padding-top: 0;
+  padding-bottom: 0;
+  left: 26%;
+  top: 1100px;
+  margin-left: -250px;
+  background: #E9E2D0;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
+  z-index: 5;
+}
+
+#card3 img {
+  width: 150px;
+  float: left;
+  margin-top: 20px;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+#card3 h2 {
+  text-align: left;
+  font-family: courier;
+  color: #333;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 15pt;
+}
+
+#card3 p {
+  text-align: left;
+  font-family: courier;
+  color: #555;
+  font-size: 13px;
+}
+
+#card3 span {
+  font-family: courier;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Profile 4 */
+#gradient4 {
+  position: absolute;
+  background: #999955;
+  background-image: linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
+  top: 1150px;
+  width: 100%;
+  height: 150px;
+}
+
+#gradient4:after {
+  content: "";
+  position: absolute;
+  background: #E9E2D0;
+  right: 10%;
+  margin-top: -67.5px;
+  margin-left: -270px;
+  padding-left: 20px;
+  border-radius: 5px;
+  width: 520px;
+  height: 275px;
+  z-index: -1;
+}
+
+#card4 {
+  position: absolute;
+  width: 450px;
+  height: 240px;
+  padding: 25px;
+  padding-top: 0;
+  padding-bottom: 0;
+  right: 12%;
+  top: 1100px;
+  margin-left: -250px;
+  background: #E9E2D0;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
+  z-index: 5;
+}
+
+#card4 img {
+  width: 150px;
+  float: left;
+  margin-top: 20px;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+#card4 h2 {
+  text-align: left;
+  font-family: courier;
+  color: #333;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 15pt;
+}
+
+#card4 p {
+  text-align: left;
+  font-family: courier;
+  color: #555;
+  font-size: 13px;
+}
+
+#card4 span {
+  font-family: courier;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
