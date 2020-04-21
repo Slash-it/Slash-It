@@ -35,7 +35,7 @@ let playButton;
 const Game = ({ width, height, stopVideo }) => {
   const dispatch = useDispatch();
   const [fruits, setFruits] = useState([]);
-  const [time, setTime] = useState(5);
+  const [time, setTime] = useState(60);
   const [score, setScore] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
