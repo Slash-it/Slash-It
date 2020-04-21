@@ -12,6 +12,7 @@ const defaultState = {
   keypoints: [],
   calibrated: {},
   isGameStarted: false,
+  isGameEnded: false,
   readyToPause: false,
   readyToResume: false,
   gamePaused: false,
@@ -26,7 +27,8 @@ const reducer = (state = defaultState, action) => {
       return { ...state, calibrated: action.pose };
     
     case GAMESTART:
-      return {...state, isGameStarted: action.bool};
+      const reverse = !action.bool;
+      return {...state, isGameStarted: action.bool, isGameEnded: reverse };
 
     case START_PAUSE_COUNTER:
       return { ...state, readyToPause: action.bool };

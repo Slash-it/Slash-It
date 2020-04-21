@@ -55,8 +55,8 @@ export const createHandKeypoint = (keypoints) => {
   // right arm angle up and right
   if (rightArmDistance.xDiff > 0 && rightArmDistance.yDiff < 0) angleR = (Math.PI * 2) - angleR;
 
-  const xDistanceR = Math.cos(angleR) * 125;
-  const yDistanceR = Math.sin(angleR) * 125;
+  const xDistanceR = Math.cos(angleR) * 75;
+  const yDistanceR = Math.sin(angleR) * 75;
 
   const rightHandKeypoints = {
     y: rightWrist.y + yDistanceR,
@@ -72,13 +72,55 @@ export const createHandKeypoint = (keypoints) => {
   // right arm angle up and right
   if (leftArmDistance.xDiff > 0 && leftArmDistance.yDiff < 0) angleL = (Math.PI * 2) - angleL;
 
-  const xDistanceL = Math.cos(angleL) * 125;
-  const yDistanceL = Math.sin(angleL) * 125;
+  const xDistanceL = Math.cos(angleL) * 75;
+  const yDistanceL = Math.sin(angleL) * 75;
 
   const letfHandKeypoints = {
     y: leftWrist.y + yDistanceL,
     x: leftWrist.x + xDistanceL,
   };
+
+  // // Nearest angle from 0 rad which is right arm pointing down
+  // const rightDown = Math.atan(Math.abs(rightArmDistance.yDiff) / Math.abs(rightArmDistance.xDiff));
+  // const rightUp = (Math.PI * 2) - rightDown;
+
+  // const leftDown = Math.PI - Math.atan(Math.abs(leftArmDistance.yDiff) / Math.abs(leftArmDistance.xDiff));
+  // const leftUp = Math.PI + Math.atan(Math.abs(leftArmDistance.yDiff) / Math.abs(leftArmDistance.xDiff));
+
+  // // extending keypoint to right hand
+  // let rightHandKeypoints;
+  // if (rightArmDistance.xDiff >= 0 && rightArmDistance.yDiff >= 0) {
+  //   const xDistanceRightDown = Math.cos(rightDown) * 125; // radius perkalian masih belum pasti 
+  //   const yDistanceRightDown = Math.sin(rightDown) * 125; // radius perkalian masih belum pasti
+  //   rightHandKeypoints = {
+  //     y: rightWrist.y + yDistanceRightDown,
+  //     x: rightWrist.x + xDistanceRightDown
+  //   };
+  // } else if (rightArmDistance.xDiff > 0 && rightArmDistance.yDiff < 0) {
+  //   const xDistanceRightUp = Math.cos(rightUp) * 125;
+  //   const yDistanceRightUp = Math.sin(rightUp) * 125;
+  //   rightHandKeypoints = {
+  //     y: rightWrist.y + yDistanceRightUp,
+  //     x: rightWrist.x + xDistanceRightUp
+  //   };
+  // }
+
+  // let letfHandKeypoints;
+  // if (leftArmDistance.xDiff <= 0 && leftArmDistance.yDiff >= 0) {
+  //   const xDistanceLeftDown = Math.cos(leftDown) * 125;
+  //   const yDistanceLeftDown = Math.sin(leftDown) * 125;
+  //   letfHandKeypoints = {
+  //     y: leftWrist.y + yDistanceLeftDown,
+  //     x: leftWrist.x + xDistanceLeftDown,
+  //   };
+  // } else if (leftArmDistance.xDiff <= 0 && leftArmDistance.yDiff < 0) {
+  //   const xDistanceLeftUp = Math.cos(leftUp) * 125;
+  //   const yDistanceLeftUp = Math.sin(leftUp) * 125;
+  //   letfHandKeypoints = {
+  //     y: leftWrist.y + yDistanceLeftUp,
+  //     x: leftWrist.x + xDistanceLeftUp,
+  //   };
+  // }
 
   return {
     rightHandKeypoints,

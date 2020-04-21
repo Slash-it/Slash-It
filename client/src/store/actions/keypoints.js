@@ -18,9 +18,9 @@ export const calibrate = (pose) => ({
   pose,
 });
 
-export const gameStart = () => ({
+export const gameStart = (bool) => ({
   type: GAMESTART,
-  bool: true,
+  bool,
 });
 
 export const startPauseCounter = (bool) => ({

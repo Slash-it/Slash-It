@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import { connect } from "react-redux";
-import { drawKeyPoints, drawSkeleton, config, createHandKeypoint } from "../helpers";
+import {
+  drawKeyPoints,
+  drawSkeleton,
+  config,
+} from "../helpers";
 import { updateKeypoints, calibrate } from "../store/actions/keypoints";
-import Game from './Game';
-import Calibration from '../components/Calibration';
-import Ready from '../components/Ready';
+import Game from "./Game";
+import Calibration from "../components/Calibration";
+import Ready from "../components/Ready";
 
 class PoseNet extends Component {
   static defaultProps = config;
@@ -23,6 +27,14 @@ class PoseNet extends Component {
 
   getVideo = (elem) => {
     this.video = elem;
+  };
+
+  stopVideo = () => {
+    const video = this.video;
+    const stream = video.srcObject;
+    const tracks = stream.getTracks();
+
+    tracks.forEach((track) => track.stop());
   };
 
   async componentDidMount() {
@@ -161,7 +173,11 @@ class PoseNet extends Component {
       }
 
       if (!this.props.calibrated.keypoints && poses[0]) {
-        if (poses[0].keypoints[1].score > minPartConfidence && poses[0].keypoints[11].score > minPartConfidence) {
+        if (
+          poses[0].keypoints[1].score > minPartConfidence &&
+          poses[0].keypoints[11].score > minPartConfidence &&
+          poses[0].keypoints[13].score > minPartConfidence
+        ) {
           this.props.calibrate(poses[0]);
         }
       }
@@ -169,24 +185,11 @@ class PoseNet extends Component {
       poses.forEach(({ score, keypoints }) => {
         // update keypoint di state
         this.props.updateKeypoints(keypoints);
-        const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(
-          keypoints
-        );
-        const newKeypointsL = [...keypoints, {
-          position: letfHandKeypoints,
-          part: 'leftHand',
-          score: 0.99
-        }];
-        const newKeypoints = [...newKeypointsL, {
-          position: rightHandKeypoints,
-          part: 'rightHand',
-          score: 0.99
-        }];
 
         if (score >= minPoseConfidence) {
           if (showPoints) {
             drawKeyPoints(
-              newKeypoints,
+              keypoints,
               minPartConfidence,
               skeletonColor,
               canvasContext
@@ -217,14 +220,11 @@ class PoseNet extends Component {
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />
-          { !loading ? <Calibration /> : null }
-          { !loading ? <Ready /> : null }
-          {
-            !loading ? 
-            <Game width={this.props.width} height={this.props.height} />
-            :
-            null
-          }
+          {!loading ? <Calibration /> : null}
+          {!loading ? <Ready /> : null}
+          {!loading ? (
+            <Game stopVideo={this.stopVideo} width={this.props.width} height={this.props.height} />
+          ) : null}
         </div>
       </div>
     );
@@ -233,9 +233,10 @@ class PoseNet extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    calibrated: state.keypoint.calibrated
-  }
-}
+    calibrated: state.keypoint.calibrated,
+    isGameEnded: state.keypoint.isGameEnded,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   updateKeypoints: (keypoints) => {

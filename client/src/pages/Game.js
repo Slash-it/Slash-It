@@ -32,10 +32,10 @@ let bombImageExplode;
 let pauseButton;
 let playButton;
 
-const Game = ({ width, height }) => {
+const Game = ({ width, height, stopVideo }) => {
   const dispatch = useDispatch();
   const [fruits, setFruits] = useState([]);
-  const [time, setTime] = useState(60);
+  const [time, setTime] = useState(5);
   const [score, setScore] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -89,8 +89,12 @@ const Game = ({ width, height }) => {
     timerId.current = setInterval(() => countDown(), 1000);
   }, []);
 
+  useEffect(() => {
+    return () => clearInterval(timerId.current);
+  }, []);
+
   const start = useCallback(() => {
-    if (!isTimerOn && !gameOver && isGameStarted) {
+    if (!isTimerOn && !gameOver && isGameStarted && !gamePaused) {
       startTimer();
     }
 
@@ -116,11 +120,10 @@ const Game = ({ width, height }) => {
         ) {
           dispatch(startResumeCounter(true));
           setTime(timerPaused);
-          startTimer();
         } else if (
           collideCircle(
-            letfHandKeypoints.x,
-            letfHandKeypoints.y,
+            rightHandKeypoints.x,
+            rightHandKeypoints.y,
             100,
             720,
             50,
@@ -129,7 +132,6 @@ const Game = ({ width, height }) => {
         ) {
           dispatch(startResumeCounter(true));
           setTime(timerPaused);
-          startTimer();
         }
       }
 
@@ -145,8 +147,12 @@ const Game = ({ width, height }) => {
           )
         ) {
           dispatch(startPauseCounter(true));
-          clearInterval(timerId.current);
-          setTimerPaused(time);
+          setTimeout(() => {
+            clearInterval(timerId.current);
+            timerId.current = null;
+            setTimerPaused(time);
+            setIsTimerOn(false);
+          }, 4000)
         }
 
         for (let fruit of fruits) {
@@ -203,8 +209,12 @@ const Game = ({ width, height }) => {
           )
         ) {
           dispatch(startPauseCounter(true));
-          clearInterval(timerId.current)
-          setTimerPaused(time);
+          setTimeout(() => {
+            clearInterval(timerId.current);
+            timerId.current = null;
+            setTimerPaused(time);
+            setIsTimerOn(false);
+          }, 4000);
         }
 
         for (let fruit of fruits) {
@@ -268,12 +278,13 @@ const Game = ({ width, height }) => {
     dispatch,
     score,
     gamePaused,
+    timerPaused,
   ]);
 
   useEffect(() => {
     if (calibrated.keypoints && !isGameStarted && !gameOver && !gamePaused) {
       setTimeout(() => {
-        dispatch(gameStart());
+        dispatch(gameStart(true));
       }, 4000);
     }
 
@@ -303,61 +314,63 @@ const Game = ({ width, height }) => {
 
   const draw = (p5) => {
     p5.clear();
-    if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
-      let randIntL = Math.floor(
-        Math.random() * (fruitImageActive.length - 1 - 0) + 0
-      );
-      setFruits([
-        ...fruits,
-        new FruitLeft(
-          p5,
-          lBoundary,
-          gameConfig[gameMode].gravity,
-          gameConfig[gameMode].vyRandomFactor,
-          fruitImageActive[randIntL],
-          fruitImageExplode[randIntL]
-        ),
-      ]);
-    }
-    if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
-      let randIntR = Math.floor(
-        Math.random() * (fruitImageActive.length - 1 - 0) + 0
-      );
-      setFruits([
-        ...fruits,
-        new FruitRight(
-          p5,
-          rBoundary,
-          gameConfig[gameMode].gravity,
-          gameConfig[gameMode].vyRandomFactor,
-          fruitImageActive[randIntR],
-          fruitImageExplode[randIntR]
-        ),
-      ]);
-    }
-    if (Math.random() >= gameConfig[gameMode].bombTriggerConstant) {
-      setBombs([
-        ...bombs,
-        new BombLeft(p5, lBoundary, bombImageActive, bombImageExplode),
-      ]);
-    }
-    if (Math.random() >= gameConfig[gameMode].bombTriggerConstant) {
-      setBombs([
-        ...bombs,
-        new BombRight(p5, rBoundary, bombImageActive, bombImageExplode),
-      ]);
-    }
-
-    for (let fruit of fruits) {
-      fruit.show();
-      //if (fruit.isShown) {
-      fruit.move();
-      //}
-    }
-
-    for (let bomb of bombs) {
-      bomb.show();
-      bomb.move();
+    if (!gamePaused) {
+      if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
+        let randIntL = Math.floor(
+          Math.random() * (fruitImageActive.length - 1 - 0) + 0
+        );
+        setFruits([
+          ...fruits,
+          new FruitLeft(
+            p5,
+            lBoundary,
+            gameConfig[gameMode].gravity,
+            gameConfig[gameMode].vyRandomFactor,
+            fruitImageActive[randIntL],
+            fruitImageExplode[randIntL]
+          ),
+        ]);
+      }
+      if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
+        let randIntR = Math.floor(
+          Math.random() * (fruitImageActive.length - 1 - 0) + 0
+        );
+        setFruits([
+          ...fruits,
+          new FruitRight(
+            p5,
+            rBoundary,
+            gameConfig[gameMode].gravity,
+            gameConfig[gameMode].vyRandomFactor,
+            fruitImageActive[randIntR],
+            fruitImageExplode[randIntR]
+          ),
+        ]);
+      }
+      if (Math.random() >= gameConfig[gameMode].bombTriggerConstant) {
+        setBombs([
+          ...bombs,
+          new BombLeft(p5, lBoundary, bombImageActive, bombImageExplode),
+        ]);
+      }
+      if (Math.random() >= gameConfig[gameMode].bombTriggerConstant) {
+        setBombs([
+          ...bombs,
+          new BombRight(p5, rBoundary, bombImageActive, bombImageExplode),
+        ]);
+      }
+  
+      for (let fruit of fruits) {
+        fruit.show();
+        //if (fruit.isShown) {
+        fruit.move();
+        //}
+      }
+  
+      for (let bomb of bombs) {
+        bomb.show();
+        bomb.move();
+      }
     }
 
     p5.noStroke();
@@ -370,7 +383,7 @@ const Game = ({ width, height }) => {
     p5.text(`Time: ${time}`, p5.width - 200, 50);
 
     p5.push();
-    p5.translate(p5.width / 2, 50);
+    p5.translate(p5.width / 2 - 100, 75);
     p5.imageMode(p5.CENTER);
     p5.image(pauseButton, 0, 0, 50, 50);
     p5.pop();
@@ -388,7 +401,7 @@ const Game = ({ width, height }) => {
         </>
       ) : null}
       <FloatingScores />
-      {gameOver && <GameOver />}
+      {gameOver && <GameOver stopVideo={stopVideo} />}
       <PauseCounter />
       <PauseAndResume />
     </>

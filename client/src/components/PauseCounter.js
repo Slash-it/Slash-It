@@ -25,6 +25,15 @@ const PauseCounter = () => {
   }, [readyToPause, gamePaused]);
 
   useEffect(() => {
+    if (countdown === 0) {
+      clearInterval(timerId.current);
+      setCountdown(4);
+      dispatch(startPauseCounter(false));
+      dispatch(pauseGame());
+    }
+  }, [countdown, dispatch]);
+
+  useEffect(() => {
     return () => clearInterval(timerId.current);
   }, [])
 
@@ -38,9 +47,7 @@ const PauseCounter = () => {
         </>
       );
     } else if (countdown === 0) {
-      clearInterval(timerId.current);
-      dispatch(pauseGame());
-      dispatch(startPauseCounter(false));
+      return null;
     } else {
       return ( 
       <>

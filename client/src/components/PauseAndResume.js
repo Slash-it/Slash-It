@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { resumeGame, startResumeCounter } from '../store/actions/keypoints';
+import React, { useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { resumeGame, startResumeCounter } from "../store/actions/keypoints";
 
 const PauseAndResume = () => {
   const dispatch = useDispatch();
@@ -23,6 +23,15 @@ const PauseAndResume = () => {
   }, [readyToResume]);
 
   useEffect(() => {
+    if (countdown === 0) {
+      clearInterval(timerId.current);
+      setCountdown(4);
+      dispatch(resumeGame());
+      dispatch(startResumeCounter(false));
+    }
+  }, [countdown, dispatch]);
+
+  useEffect(() => {
     return () => clearInterval(timerId.current);
   }, []);
 
@@ -30,23 +39,21 @@ const PauseAndResume = () => {
     if (countdown === 4) {
       return (
         <>
-        <div className="countdown">
-          <h1>RESUMING IN</h1>
+          <div className="countdown">
+            <h1>RESUMING IN</h1>
           </div>
         </>
       );
     } else if (countdown === 0) {
-      clearInterval(timerId.current);
-      dispatch(resumeGame());
-      dispatch(startResumeCounter(false));
+      return null;
     } else {
-      return ( 
-      <>
-      <div className="countdown">
-          <h1>{countdown}</h1>
+      return (
+        <>
+          <div className="countdown">
+            <h1>{countdown}</h1>
           </div>
-      </>
-      )
+        </>
+      );
     }
   } else {
     return null;
