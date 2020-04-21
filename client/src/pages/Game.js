@@ -238,7 +238,7 @@ const Game = ({ width, height }) => {
     if(Math.random() >= gameConfig[gameMode].bombTriggerConstant){
       setBombs([...bombs, new BombLeft(
         p5,
-        boundary,
+        lBoundary,
         bombImageActive,
         bombImageExplode,
       )]);
@@ -246,7 +246,7 @@ const Game = ({ width, height }) => {
     if(Math.random() >= gameConfig[gameMode].bombTriggerConstant){
       setBombs([...bombs, new BombRight(
         p5,
-        boundary,
+        rBoundary,
         bombImageActive,
         bombImageExplode,
       )]);
