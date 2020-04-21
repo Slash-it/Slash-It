@@ -105,9 +105,11 @@ const Game = ({ width, height }) => {
             )
             && fruit.isShown
           ) {
+            if(!fruit.isDestroyed){
+              dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
+              setScore(score + 100);
+            }
             fruit.destroy();
-            dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
-            setScore(score + 100);
           }
         }
 
@@ -116,17 +118,17 @@ const Game = ({ width, height }) => {
             collideCircle(
               letfHandKeypoints.x,
               letfHandKeypoints.y,
-              70,
+              80,
               bomb.x,
               bomb.y,
               bomb.diameter
             )
           ) {
+            if(!bomb.isDestroyed){
+              dispatch(showFloatingScore(`-100`, bomb.x, bomb.y));
+              setScore(score - 100);
+            }
             bomb.destroy();
-
-            dispatch(showFloatingScore(`-100`, bomb.x, bomb.y));
-            setScore(score - 100);
-
           }
         }
       }
@@ -144,10 +146,11 @@ const Game = ({ width, height }) => {
             )
             && fruit.isShown
           ) {
-
+            if(!fruit.isDestroyed){
+              dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
+              setScore(score + 100);
+            }
             fruit.destroy();
-            dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
-            setScore(score + 100);
           }
         }
 
@@ -156,16 +159,17 @@ const Game = ({ width, height }) => {
             collideCircle(
               rightHandKeypoints.x,
               rightHandKeypoints.y,
-              70,
+              80,
               bomb.x,
               bomb.y,
               bomb.diameter
             )
           ) {
+            if(!bomb.isDestroyed){
+              dispatch(showFloatingScore(`-100`, bomb.x, bomb.y));
+              setScore(score - 100);
+            }
             bomb.destroy();
-
-            dispatch(showFloatingScore(`-100`, bomb.x, bomb.y));
-            setScore(score - 100);
           }
         }
       }
