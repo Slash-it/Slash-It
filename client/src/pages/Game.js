@@ -20,6 +20,8 @@ let fruitImageActive = [];
 let fruitImageExplode = [];
 let bombImageActive;
 let bombImageExplode;
+let pauseButton;
+let playButton;
 
 const Game = ({ width, height }) => {
   const dispatch = useDispatch();
@@ -202,64 +204,64 @@ const Game = ({ width, height }) => {
       fruitImageActive.push(p5.loadImage(fruitImages[i].activeUrl));
       fruitImageExplode.push(p5.loadImage(fruitImages[i].explodeUrl));
     }
-    bombImageActive = p5.loadImage("/assets/bombs/bomb.png");
-    bombImageExplode = p5.loadImage("/assets/bombs/bombExplode.png");
-  };
+
+    bombImageActive = p5.loadImage( "/assets/bombs/bomb.png" )
+    bombImageExplode = p5.loadImage( "/assets/bombs/bombExplode.png" )
+
+    pauseButton = p5.loadImage( "/assets/buttons/pause.png" )
+    playButton = p5.loadImage( "/assets/buttons/play.png" )
+  }
+
 
   // CANVAS P5 SETUP
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(width, height).parent(canvasParentRef);
-  };
+    p5.angleMode(p5.DEGREES)
+  }
 
   const draw = (p5) => {
-    p5.clear();
-    if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
-      let randIntL = Math.floor(
-        Math.random() * (fruitImageActive.length - 1 - 0) + 0
-      );
-      setFruits([
-        ...fruits,
-        new FruitLeft(
-          p5,
-          lBoundary,
-          gameConfig[gameMode].gravity,
-          gameConfig[gameMode].vyRandomFactor,
-          fruitImageActive[randIntL],
-          fruitImageExplode[randIntL]
-        ),
-      ]);
-    }
-    if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
-      let randIntR = Math.floor(
-        Math.random() * (fruitImageActive.length - 1 - 0) + 0
-      );
-      setFruits([
-        ...fruits,
-        new FruitRight(
-          p5,
-          rBoundary,
-          gameConfig[gameMode].gravity,
-          gameConfig[gameMode].vyRandomFactor,
-          fruitImageActive[randIntR],
-          fruitImageExplode[randIntR]
-        ),
-      ]);
-    }
-    if (Math.random() >= gameConfig[gameMode].bombTriggerConstant) {
-      setBombs([
-        ...bombs,
-        new BombLeft(p5, lBoundary, bombImageActive, bombImageExplode),
-      ]);
-    }
-    if (Math.random() >= gameConfig[gameMode].bombTriggerConstant) {
-      setBombs([
-        ...bombs,
-        new BombRight(p5, rBoundary, bombImageActive, bombImageExplode),
-      ]);
-    }
-
-    for (let fruit of fruits) {
-      fruit.show();
+    p5.clear()
+    if(Math.random() >= gameConfig[gameMode].fruitTriggerConstant){
+      let randIntL = Math.floor( Math.random() * ( (fruitImageActive.length - 1) - 0) + 0 )
+      setFruits([...fruits, new FruitLeft(
+        p5, 
+        lBoundary, 
+        gameConfig[gameMode].gravity, 
+        gameConfig[gameMode].vyRandomFactor,
+        fruitImageActive[randIntL],
+        fruitImageExplode[randIntL],
+      )]);
+    };
+    if(Math.random() >= gameConfig[gameMode].fruitTriggerConstant){
+      let randIntR = Math.floor( Math.random() * ( (fruitImageActive.length - 1) - 0) + 0 )
+      setFruits([...fruits, new FruitRight(
+        p5, 
+        rBoundary, 
+        gameConfig[gameMode].gravity, 
+        gameConfig[gameMode].vyRandomFactor,
+        fruitImageActive[randIntR],
+        fruitImageExplode[randIntR],
+      )]);
+    };
+    if(Math.random() >= gameConfig[gameMode].bombTriggerConstant){
+      setBombs([...bombs, new BombLeft(
+        p5,
+        lBoundary,
+        bombImageActive,
+        bombImageExplode,
+      )]);
+    };
+    if(Math.random() >= gameConfig[gameMode].bombTriggerConstant){
+      setBombs([...bombs, new BombRight(
+        p5,
+        rBoundary,
+        bombImageActive,
+        bombImageExplode,
+      )]);
+    };
+    
+    for(let fruit of fruits){
+      fruit.show()
       //if (fruit.isShown) {
       fruit.move();
       //}
@@ -278,6 +280,12 @@ const Game = ({ width, height }) => {
     p5.textSize(36);
     p5.text(`SCORE: ${score}`, 50, 50);
     p5.text(`Time: ${time}`, p5.width - 200, 50);
+
+    p5.push()
+      p5.translate(p5.width/2, 50)
+      p5.imageMode(p5.CENTER)
+      p5.image(pauseButton, 0, 0, 50, 50)
+    p5.pop()
 
     // p5.rect(0, 0, lBoundary, p5.height-5);
     // p5.rect(rBoundary, 0, rBoundary, p5.height-5);
