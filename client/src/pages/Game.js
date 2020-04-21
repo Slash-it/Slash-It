@@ -147,6 +147,11 @@ const Game = ({ width, height }) => {
     start();
   }, [calibrated, start, isGameStarted, gameOver, dispatch]);
 
+  // CANVAS P5 PRELOAD
+  const preload = (p5) => {
+    p5.Fredoka = p5.loadFont('/assets/FredokaOne-Regular.ttf')
+  }
+
   // CANVAS P5 SETUP
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(width, height).parent(canvasParentRef);
@@ -195,9 +200,11 @@ const Game = ({ width, height }) => {
       bomb.move()
     };
 
-    p5.fill(255, 255, 255);
-    p5.stroke(0, 0, 0);
-    p5.strokeWeight(2);
+    p5.noStroke();
+    
+    p5.fill(0, 0, 0);
+    p5.textFont(p5.Fredoka)
+
     p5.textSize(36);
     p5.text(`SCORE: ${score}`, 50, 50);
     p5.text(`Time: ${time}`, p5.width - 200, 50);
@@ -209,7 +216,7 @@ const Game = ({ width, height }) => {
   return(
     <>
     {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
-    {calibrated.keypoints && isGameStarted && !gameOver ? <Sketch setup={setup} draw={draw} /> : null}
+    {calibrated.keypoints && isGameStarted && !gameOver ? <Sketch preload={preload} setup={setup} draw={draw} /> : null}
     <FloatingScores/>
     { gameOver && <GameOver /> }
     </>
