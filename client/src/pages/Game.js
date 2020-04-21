@@ -208,6 +208,7 @@ const Game = ({ width, height }) => {
   // CANVAS P5 SETUP
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(width, height).parent(canvasParentRef);
+    p5.angleMode(p5.DEGREES)
   }
 
   const draw = (p5) => {
