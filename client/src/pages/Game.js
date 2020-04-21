@@ -13,6 +13,10 @@ import { gameStart } from "../store/actions/keypoints";
 import GameOver from '../components/GameOver';
 
 const music = new Audio('/assets/audio/GameBg.mp3');
+let fruitImageActive = [];
+let fruitImageExplode = [];
+let bombImageActive;
+let bombImageExplode;
 
 const Game = ({ width, height }) => {
   const dispatch = useDispatch();
@@ -26,7 +30,7 @@ const Game = ({ width, height }) => {
   const [boundary, setBoundary] = useState(400);
   const [lBoundary, setLBoundary] = useState(0);
   const [rBoundary, setRBoundary] = useState(0);
-  const [gameMode, setGameMode] = useState(1);
+  const [gameMode, setGameMode] = useState(0);
   const [gameConfig, setGameConfig] = useState(
     [
       {
@@ -53,6 +57,7 @@ const Game = ({ width, height }) => {
   const calibrated = useSelector((state) => state.keypoint.calibrated);
   const keypoints = useSelector((state) => state.keypoint.keypoints);
   const isGameStarted = useSelector((state) => state.keypoint.isGameStarted);
+  const fruitImages = useSelector((state) => state.item.fruits)
 
   useEffect(() => {
     music.addEventListener('ended', function() {
@@ -97,7 +102,22 @@ const Game = ({ width, height }) => {
               fruit.diameter
             )
           ) {
-            fruit.unShow();
+            fruit.destroy();
+          }
+        }
+
+        for (let bomb of bombs) {
+          if (
+            collideCircle(
+              letfHandKeypoints.x,
+              letfHandKeypoints.y,
+              70,
+              bomb.x,
+              bomb.y,
+              bomb.diameter
+            )
+          ) {
+            bomb.destroy();
           }
         }
       }
@@ -114,7 +134,22 @@ const Game = ({ width, height }) => {
               fruit.diameter
             )
           ) {
-            fruit.unShow();
+            fruit.destroy();
+          }
+        }
+
+        for (let bomb of bombs) {
+          if (
+            collideCircle(
+              rightHandKeypoints.x,
+              rightHandKeypoints.y,
+              70,
+              bomb.x,
+              bomb.y,
+              bomb.diameter
+            )
+          ) {
+            bomb.destroy();
           }
         }
       }
@@ -140,6 +175,12 @@ const Game = ({ width, height }) => {
   // CANVAS P5 PRELOAD
   const preload = (p5) => {
     p5.Fredoka = p5.loadFont('/assets/FredokaOne-Regular.ttf')
+    for(let i=0; i<fruitImages.length; i++){
+      fruitImageActive.push( p5.loadImage( fruitImages[i].activeUrl ) )
+      fruitImageExplode.push( p5.loadImage( fruitImages[i].explodeUrl ) )
+    }
+    bombImageActive = p5.loadImage( "/assets/bombs/bomb.png" )
+    bombImageExplode = p5.loadImage( "/assets/bombs/bombExplode.png" )
   }
 
   // CANVAS P5 SETUP
@@ -150,31 +191,41 @@ const Game = ({ width, height }) => {
   const draw = (p5) => {
     p5.clear()
     if(Math.random() >= gameConfig[gameMode].fruitTriggerConstant){
+      let randIntL = Math.floor( Math.random() * ( (fruitImageActive.length - 1) - 0) + 0 )
       setFruits([...fruits, new FruitLeft(
         p5, 
         lBoundary, 
         gameConfig[gameMode].gravity, 
         gameConfig[gameMode].vyRandomFactor,
+        fruitImageActive[randIntL],
+        fruitImageExplode[randIntL],
       )]);
     };
     if(Math.random() >= gameConfig[gameMode].fruitTriggerConstant){
+      let randIntR = Math.floor( Math.random() * ( (fruitImageActive.length - 1) - 0) + 0 )
       setFruits([...fruits, new FruitRight(
         p5, 
         rBoundary, 
         gameConfig[gameMode].gravity, 
         gameConfig[gameMode].vyRandomFactor,
+        fruitImageActive[randIntR],
+        fruitImageExplode[randIntR],
       )]);
     };
     if(Math.random() >= gameConfig[gameMode].bombTriggerConstant){
       setBombs([...bombs, new BombLeft(
         p5,
-        boundary
+        boundary,
+        bombImageActive,
+        bombImageExplode,
       )]);
     };
     if(Math.random() >= gameConfig[gameMode].bombTriggerConstant){
       setBombs([...bombs, new BombRight(
         p5,
-        boundary
+        boundary,
+        bombImageActive,
+        bombImageExplode,
       )]);
     };
     
