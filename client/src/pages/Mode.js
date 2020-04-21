@@ -37,9 +37,9 @@ function Mode(){
                     <br></br>
                     <h4>Choose The Level !</h4>
                     <div className='d-flex row'>
-                    <Link to='/mode/'><div className="btn btn-danger mr-5"><h4>Easy</h4></div></Link>
-                    <Link to='/mode/'><div className="btn btn-danger mr-5"><h4>Medium</h4></div></Link>
-                    <Link to='/mode/'><div className="btn btn-danger"><h4>Hard</h4></div></Link>
+                    <Link to='/game'><div className="btn btn-danger mr-5"><h4>Easy</h4></div></Link>
+                    <Link to='/game'><div className="btn btn-danger mr-5"><h4>Medium</h4></div></Link>
+                    <Link to='/game'><div className="btn btn-danger"><h4>Hard</h4></div></Link>
                     </div>
                 </div>
             </div>

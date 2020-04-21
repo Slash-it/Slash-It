@@ -1,5 +1,10 @@
 @import url(https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap);
 
+@font-face {
+  font-family: 'Samurai';
+  src: url('/assets/go3v2.ttf') format('truetype');
+}
+
 
 @keyframes bounce-2 {
   0%   { transform: translateY(0px); }
@@ -218,7 +223,7 @@
 }
 
 .Body {
-  background-image: url('./assets/background2.png') ;
+  background-image: url('/assets/fruits/background2.png') ;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   min-height: 100vh;
@@ -229,7 +234,7 @@
 }
 
 .BodyPages {
-  background-image: url('./assets/background.png') ;
+  background-image: url('/assets/fruits/background.png') ;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   min-height: 100vh;
@@ -240,8 +245,14 @@
 }
 
 
+h1{
+  font-family: 'Samurai';
+  font-size: 50px;
+  color: white;
+}
+
 h3{
-  font-family: 'Fredoka One';
+  font-family: 'Samurai';
   font-size: 50px;
 }
 

@@ -5,6 +5,7 @@ import {
   Route
 } from 'react-router-dom';
 import Home from './pages/Home';
+import Mode from './pages/Mode'
 import Camera from './pages/Camera';
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
     path: '/',
     exact: true,
     children: <Home />
+  },
+  {
+    path: '/mode',
+    exact: true,
+    children: <Mode />
   },
   {
     path: '/game',

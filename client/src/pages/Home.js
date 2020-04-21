@@ -18,11 +18,11 @@ function Home() {
       <img src={banana} className="banana rotate" alt="fruit" />
       <img src={orange} className="orange rotatereverse" alt="fruit" />
       <div className="center">
-        <div className="bounce">
-          <h3>Welcome to Slash-It !</h3>
+        <div className="zoomIn">
+          <h3>Welcome to Punch Frenzy!</h3>
           {/* <img src="/assets/HomeLogo.png" height='300px' width='auto' alt="" /> */}
           <div className="btn btn-danger">
-            <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/game')}>Play Now</h4>
+            <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/mode')}>Play Now</h4>
           </div>
         </div>
       </div>
