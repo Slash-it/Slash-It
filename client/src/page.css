@@ -266,6 +266,45 @@ h4{
 }
 
 
+.floating-score {
+  position: absolute;
+}
+
+@keyframes float {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+
+  10% {
+    transform: scale(1.5, 1.5) translateY(-2px);
+    opacity: 1;
+  }
+
+  20% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}
+
+.floating-score > div {
+  position: absolute;
+  left: -100px;
+  width: 200px;
+  top: -20px;
+  font-family: 'Fredoka One';
+  font-size: 30px; 
+  color: #fff;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  animation: float 2s linear forwards;
+}
+
+
 .fruit2.bounce-2{
   width: 30px;
   height: 30px;
@@ -521,3 +560,4 @@ h4{
   left: 96%;
   bottom: 2%;
 }
+

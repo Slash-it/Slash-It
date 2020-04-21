@@ -11,6 +11,8 @@ import BombRight from "../objects/bombRight";
 import { gameStart } from "../store/actions/keypoints";
 
 import GameOver from '../components/GameOver';
+import FloatingScores from "../components/FloatingScores";
+import { showFloatingScore } from "../store/actions/floatingScores";
 
 const music = new Audio('/assets/audio/GameBg.mp3');
 
@@ -96,8 +98,11 @@ const Game = ({ width, height }) => {
               fruit.y,
               fruit.diameter
             )
+            && fruit.isShown
           ) {
             fruit.unShow();
+            dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
+            setScore(score + 100);
           }
         }
       }
@@ -113,11 +118,16 @@ const Game = ({ width, height }) => {
               fruit.y,
               fruit.diameter
             )
+            && fruit.isShown
           ) {
             fruit.unShow();
+            dispatch(showFloatingScore(`+100`, fruit.x, fruit.y));
+            setScore(score + 100);
           }
         }
       }
+
+      // TODO: handle collide with bomb
     }
 
     if (time <= 0) {
@@ -180,7 +190,9 @@ const Game = ({ width, height }) => {
     
     for(let fruit of fruits){
       fruit.show()
-      fruit.move()
+      //if (fruit.isShown) {
+        fruit.move()
+      //}
     };
 
     for(let bomb of bombs){
@@ -192,6 +204,7 @@ const Game = ({ width, height }) => {
     
     p5.fill(0, 0, 0);
     p5.textFont(p5.Fredoka)
+
     p5.textSize(36);
     p5.text(`SCORE: ${score}`, 50, 50);
     p5.text(`Time: ${time}`, p5.width - 200, 50);
@@ -204,6 +217,7 @@ const Game = ({ width, height }) => {
     <>
     {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
     {calibrated.keypoints && isGameStarted && !gameOver ? <Sketch preload={preload} setup={setup} draw={draw} /> : null}
+    <FloatingScores/>
     { gameOver && <GameOver /> }
     </>
   )
