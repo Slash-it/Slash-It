@@ -8,10 +8,12 @@ import FruitLeft from "../objects/fruitLeft";
 import FruitRight from "../objects/fruitRight";
 import BombLeft from "../objects/bomLeft";
 import BombRight from "../objects/bombRight";
-import { gameStart } from "../store/actions/keypoints";
 
 import GameOver from "../components/GameOver";
 import FloatingScores from "../components/FloatingScores";
+import PauseCounter from '../components/PauseCounter';
+
+import { gameStart, startPauseCounter } from "../store/actions/keypoints";
 import { showFloatingScore } from "../store/actions/floatingScores";
 
 const music = new Audio("/assets/audio/GameBg.mp3");
@@ -31,7 +33,6 @@ const Game = ({ width, height }) => {
   const [score, setScore] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [gamePaused, setGamePause] = useState(false);
   const [timerPaused, setTimerPaused] = useState(0);
   let timerId = useRef();
   const [bombs, setBombs] = useState([]);
@@ -63,6 +64,7 @@ const Game = ({ width, height }) => {
   const keypoints = useSelector((state) => state.keypoint.keypoints);
   const isGameStarted = useSelector((state) => state.keypoint.isGameStarted);
   const fruitImages = useSelector((state) => state.item.fruits);
+  const gamePaused = useSelector((state) => state.keypoint.gamePaused);
 
   useEffect(() => {
     music.addEventListener("ended", function () {
@@ -96,6 +98,11 @@ const Game = ({ width, height }) => {
       );
 
       if (letfHandKeypoints) {
+        if (collideCircle(letfHandKeypoints.x, letfHandKeypoints.y, 100, 720, 50, 50)) {
+          console.log('pause clicked');
+          dispatch(startPauseCounter());
+        }
+
         for (let fruit of fruits) {
           if (
             collideCircle(
@@ -304,6 +311,7 @@ const Game = ({ width, height }) => {
       ) : null}
       <FloatingScores />
       {gameOver && <GameOver />}
+      <PauseCounter />
     </>
   );
 };
