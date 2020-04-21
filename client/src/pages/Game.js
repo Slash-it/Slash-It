@@ -16,6 +16,7 @@ import { showFloatingScore } from "../store/actions/floatingScores";
 
 const music = new Audio("/assets/audio/GameBg.mp3");
 const squish = new Audio("/assets/audio/squish.mp3");
+const explosion = new Audio("/assets/audio/explosion.mp3");
 let fruitImageActive = [];
 let fruitImageExplode = [];
 let bombImageActive;
@@ -130,6 +131,7 @@ const Game = ({ width, height }) => {
             if (!bomb.isDestroyed) {
               dispatch(showFloatingScore(`-100`, bomb.x, bomb.y));
               setScore(score - 100);
+              explosion.play();
             }
             bomb.destroy();
           }
@@ -172,6 +174,7 @@ const Game = ({ width, height }) => {
             if (!bomb.isDestroyed) {
               dispatch(showFloatingScore(`-100`, bomb.x, bomb.y));
               setScore(score - 100);
+              explosion.play();
             }
             bomb.destroy();
           }
