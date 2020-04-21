@@ -2,6 +2,7 @@ import React from "react";
 import "../page.css";
 import { useHistory } from "react-router-dom";
 import HowToPlay from "../components/HowToPlay";
+import Leaderboard from "../components/Leaderboard";
 const strawberry = "/assets/fruits/Strawberry.png";
 const grapes = "/assets/fruits/Grape.png";
 const banana = "/assets/fruits/Banana.png";
@@ -13,6 +14,7 @@ const pear = "./assets/fruits/Pear.png";
 function Home() {
   const history = useHistory();
   const [howToPlayVisible, setHowToPlayVisible] = React.useState(false);
+  const [leaderboardVisible, setLeaderboardVisible] = React.useState(false);
   return (
     <div className="Body">
       {/* <img src={strawberry} className="strawberry rotate" alt="fruit" /> */}
@@ -31,6 +33,16 @@ function Home() {
               How To Play
             </h4>
           </div>
+          <div className="pl-2 d-inline-block">
+          <div className="btn btn-danger">
+          <h4
+            style={{ cursor: "pointer" }}
+            onClick={() => setLeaderboardVisible(true)}
+          >
+            Leaderboard
+          </h4>
+        </div>
+        </div>
 
           <div className="pl-2 d-inline-block">
             <div className="btn btn-danger">
@@ -53,6 +65,11 @@ function Home() {
           <HowToPlay close={() => setHowToPlayVisible(false)} />
         )}
       </div>
+      <div>
+      {leaderboardVisible && (
+        <Leaderboard close={() => setLeaderboardVisible(false)} />
+      )}
+    </div>
     </div>
   );
 }
