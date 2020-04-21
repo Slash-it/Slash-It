@@ -7,6 +7,7 @@ import {
 import Home from './pages/Home';
 import Mode from './pages/Mode'
 import Camera from './pages/Camera';
+import About from './pages/About';
 
 const routes = [
   {
@@ -23,6 +24,11 @@ const routes = [
     path: '/game',
     exact: true,
     children: <Camera />
+  },
+  {
+    path: '/about',
+    exact: true,
+    children: <About />
   }
 ];
 

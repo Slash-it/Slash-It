@@ -21,8 +21,16 @@ function Home() {
         <div className="zoomIn">
           <h3>Welcome to Punch Frenzy!</h3>
           {/* <img src="/assets/HomeLogo.png" height='300px' width='auto' alt="" /> */}
+          <div className="d-flex row ml-2">
+          <div className="btn btn-danger mr-5 ml-5">
+            <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/about')}>About</h4>
+          </div>
+          <div className="btn btn-danger mr-5 ">
+            <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/mode')}>Play Now</h4>
+          </div>
           <div className="btn btn-danger">
             <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/mode')}>Play Now</h4>
+          </div>
           </div>
         </div>
       </div>
