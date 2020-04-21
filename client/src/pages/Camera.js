@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as posenet from "@tensorflow-models/posenet";
 import { connect } from "react-redux";
-import { drawKeyPoints, drawSkeleton, config } from "../helpers";
+import { drawKeyPoints, drawSkeleton, config, createHandKeypoint } from "../helpers";
 import { updateKeypoints, calibrate } from "../store/actions/keypoints";
 import Game from './Game';
 import Calibration from '../components/Calibration';
@@ -162,7 +162,6 @@ class PoseNet extends Component {
 
       if (!this.props.calibrated.keypoints && poses[0]) {
         if (poses[0].keypoints[1].score > minPartConfidence && poses[0].keypoints[11].score > minPartConfidence) {
-          console.log('CALIBRATED!!!!');
           this.props.calibrate(poses[0]);
         }
       }
@@ -170,11 +169,24 @@ class PoseNet extends Component {
       poses.forEach(({ score, keypoints }) => {
         // update keypoint di state
         this.props.updateKeypoints(keypoints);
+        const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(
+          keypoints
+        );
+        const newKeypointsL = [...keypoints, {
+          position: letfHandKeypoints,
+          part: 'leftHand',
+          score: 0.99
+        }];
+        const newKeypoints = [...newKeypointsL, {
+          position: rightHandKeypoints,
+          part: 'rightHand',
+          score: 0.99
+        }];
 
         if (score >= minPoseConfidence) {
           if (showPoints) {
             drawKeyPoints(
-              keypoints,
+              newKeypoints,
               minPartConfidence,
               skeletonColor,
               canvasContext
