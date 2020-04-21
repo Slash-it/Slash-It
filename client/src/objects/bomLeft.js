@@ -1,21 +1,24 @@
 class Bomb {
-    constructor(p5, boundary) {
+    constructor(p5, boundary, fImgActive, fImgExplode) {
         this.diameter = 65
-
         this.x = Math.random() * ( (boundary - 50) - 50 ) + 50
         this.y = p5.height + this.diameter
         this.vy = Math.random() * (18 - 12) + 12
         this.vx = Math.random() * (2.5 - (-2.5)) + (-2.5)
         this.gravity = 0.2
         this.isShown = true
+        this.isDestroyed = false
         this.p5 = p5
         this.boundary = boundary
+        this.fImgActive = fImgActive
+        this.fImgExplode = fImgExplode
     }
 
     move() {
-        this.y -= this.vy
-        // this.x += this.vx
-        this.vy -= this.gravity
+        if(!this.isDestroyed){
+            this.y -= this.vy
+            this.vy -= this.gravity
+        }
         // if( Math.abs(this.boundary - this.x) <= this.diameter/2){
         //     this.vx *= -1
         // }
@@ -24,14 +27,23 @@ class Bomb {
         // }
     }
 
+    destroy(){
+        this.isDestroyed = true
+        setTimeout(() => {
+            this.isShown = false
+        }, 2000)
+    }
+
     unShow(){
         this.isShown = false
     }
 
     show() {
-        if(this.isShown){
-            this.p5.fill(0, 0, 255)
-            this.p5.ellipse(this.x, this.y, this.diameter, this.diameter)
+        if(!this.isDestroyed && this.isShown){
+            this.p5.image(this.fImgActive, this.x, this.y, this.diameter, this.diameter)
+        }
+        else if(this.isDestroyed && this.isShown){
+            this.p5.image(this.fImgExplode, this.x, this.y, this.diameter + 50, this.diameter + 50)
         }
     }
 }
