@@ -1,7 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const app = express()
 const router = require('./Router/router.js')
-const port = 3002
+const PORT = process.env.PORT || 3002
 const client = require('./Services/config')
 const cors = require('cors');
 const createUserCollection = require('./Helper/userCollection')
@@ -25,8 +26,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use('/',router)
 
-app.listen(port,()=>{
-    console.log('listening to port ' + port)
+app.listen(PORT,()=>{
+    console.log('listening to port ' + PORT)
 })
 
 module.exports = app

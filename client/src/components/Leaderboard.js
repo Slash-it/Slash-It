@@ -1,24 +1,16 @@
 import React, { useEffect } from 'react';
 import './style/Leaderboard.css'
-const url = 'http://localhost:3002/user';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchScore } from '../store/actions/keypoints';
 
 const Leaderboard = ({ close }) => {
-    const [leaderboard, setLeaderboard] = React.useState([]);
+    // const [leaderboard, setLeaderboard] = React.useState([]);
+    const leaderboard = useSelector((state) => state.keypoint.leaderboards);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-      async function fetchData() {
-        const response = await fetch(url, {
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const dataJson = await response.json();
-        const sorted = dataJson.sort((a, b) => a - b);
-        setLeaderboard(sorted);
-      };
-      fetchData();
-    }, [])
+      dispatch(fetchScore());
+    }, [dispatch]);
     
     return <>
         <div className="leaderboard">

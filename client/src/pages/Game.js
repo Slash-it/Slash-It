@@ -21,6 +21,7 @@ import {
   startResumeCounter,
 } from "../store/actions/keypoints";
 import { showFloatingScore } from "../store/actions/floatingScores";
+import { useParams } from "react-router-dom";
 
 const music = new Audio("/assets/audio/GameBg.mp3");
 const squish = new Audio("/assets/audio/squish.mp3");
@@ -34,8 +35,9 @@ let playButton;
 
 const Game = ({ width, height, stopVideo }) => {
   const dispatch = useDispatch();
+  const { mode } = useParams();
   const [fruits, setFruits] = useState([]);
-  const [time, setTime] = useState(10);
+  const [time, setTime] = useState(20);
   const [score, setScore] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -44,7 +46,7 @@ const Game = ({ width, height, stopVideo }) => {
   const [bombs, setBombs] = useState([]);
   const [lBoundary, setLBoundary] = useState(0);
   const [rBoundary, setRBoundary] = useState(0);
-  const [gameMode, setGameMode] = useState(0);
+  const [gameMode, setGameMode] = useState(mode === 'easy' ? 0 : mode === 'medium' ? 1 : 2);
   const [gameConfig, setGameConfig] = useState([
     {
       fruitTriggerConstant: 0.98,
@@ -90,7 +92,11 @@ const Game = ({ width, height, stopVideo }) => {
   }, []);
 
   useEffect(() => {
-    return () => clearInterval(timerId.current);
+    return () => {
+      clearInterval(timerId.current);
+      music.pause();
+      music.currentTime = 0;
+    }
   }, []);
 
   const start = useCallback(() => {
