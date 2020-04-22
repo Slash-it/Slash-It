@@ -3,7 +3,7 @@ import './style/HowToPlay.css'
 
 const HowToPlay = ({ close }) => {
     return <>
-        <div class="howtoplay">
+        <div className="howtoplay">
             <ol>HOW TO PLAY</ol>
             <ol>1. Press Play Now button</ol>
             <ol>2. Input your username and choose difficulty level</ol>

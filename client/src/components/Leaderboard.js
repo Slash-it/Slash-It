@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './style/Leaderboard.css'
+const url = 'http://localhost:3002/user';
 
 const Leaderboard = ({ close }) => {
     const [leaderboard, setLeaderboard] = React.useState([]);
-    const users = []
-    React.useEffect(()=>{
-        fetch('http://localhost:3002/user',{
-            method: 'GET'
-        })
-        .then(response => response.json())
-        .then(users=>{
-            users.sort(function(a, b) {
-                return (a.score > b.score) - (a.score < b.score);
-            })
-            setLeaderboard(users)
-        })
-    },[])
+
+    useEffect(() => {
+      async function fetchData() {
+        const response = await fetch(url, {
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const dataJson = await response.json();
+        const sorted = dataJson.sort((a, b) => a - b);
+        setLeaderboard(sorted);
+      };
+      fetchData();
+    }, [])
     
     return <>
-        <div class="leaderboard">
+        <div className="leaderboard">
             <div>LEADERBOARD</div>
             {
                 leaderboard.map((x, index)=>{

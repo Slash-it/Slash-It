@@ -3,6 +3,7 @@ const app = express()
 const router = require('./Router/router.js')
 const port = 3002
 const client = require('./Services/config')
+const cors = require('cors');
 const createUserCollection = require('./Helper/userCollection')
 
 function initializeMongo(req,res,next){
@@ -19,6 +20,7 @@ function initializeMongo(req,res,next){
 }
 
 app.use(initializeMongo)
+app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use('/',router)
