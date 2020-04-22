@@ -8,12 +8,14 @@ import {
   START_RESUME_COUNTER,
   SUBMIT_SCORE,
   FETCH_SCORE,
+  SAVE_NAME,
 } from '../actions/action-types';
 
 const defaultState = {
   keypoints: [],
   leaderboards: [],
   calibrated: {},
+  playerName: '',
   isGameStarted: false,
   isGameEnded: false,
   readyToPause: false,
@@ -50,7 +52,9 @@ const reducer = (state = defaultState, action) => {
 
     case SUBMIT_SCORE:
       return { ...state, leaderboards: [...state.leaderboards, action.payload] };
-
+    
+    case SAVE_NAME:
+      return { ...state, playerName: action.name };
     default:
       return state;
   }

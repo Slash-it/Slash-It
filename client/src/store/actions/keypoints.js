@@ -7,7 +7,8 @@ import {
   RESUME_GAME,
   START_RESUME_COUNTER,
   SUBMIT_SCORE,
-  FETCH_SCORE
+  FETCH_SCORE,
+  SAVE_NAME,
 } from './action-types'
 
 const url = 'http://localhost:3002/user';
@@ -82,3 +83,8 @@ export const submitScore = (name, score) => async (dispatch) => {
     payload: dataJson,
   });
 };
+
+export const saveName = (name) => ({
+  type: SAVE_NAME,
+  name,
+});
