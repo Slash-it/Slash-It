@@ -3,7 +3,8 @@ import "./style/GameOver.css"
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { gameStart, submitScore } from "../store/actions/keypoints";
-const gameOverIcon = "/assets/game_over.png"
+// const gameOverIcon = "/assets/game_over.png";
+const gameOverIcon2 = '/assets/game_over2.png';
 
 function GameOver (props) {
   const history = useHistory();
@@ -22,7 +23,7 @@ function GameOver (props) {
 
     return (
         <div className="gameOver">
-            <img src={gameOverIcon} alt="Game Over" className="gameOver-logo" />
+            <img src={gameOverIcon2} alt="Game Over" className="gameOver-logo" />
             <div className="button-container">
                 <button className="gameOverButton" onClick={() => submit()} >Submit</button>
                 <button className="gameOverButton" onClick={() => home()} >Home</button>

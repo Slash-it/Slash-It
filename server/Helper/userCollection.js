@@ -9,7 +9,7 @@ function createUserCollection(db){
                  description: "must be a string and is required"
               },
               score: {
-                 bsonType : "double",
+                 bsonType : "int",
               }
            }
         } }
