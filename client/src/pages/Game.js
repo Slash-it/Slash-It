@@ -314,7 +314,7 @@ const Game = ({ width, height, stopVideo }) => {
 
   const draw = (p5) => {
     p5.clear();
-    if (!gamePaused) {
+    if (!gamePaused && !gameOver) {
       if (Math.random() >= gameConfig[gameMode].fruitTriggerConstant) {
         let randIntL = Math.floor(
           Math.random() * (fruitImageActive.length - 1 - 0) + 0
@@ -359,19 +359,22 @@ const Game = ({ width, height, stopVideo }) => {
           new BombRight(p5, rBoundary, bombImageActive, bombImageExplode),
         ]);
       }
+    }
   
       for (let fruit of fruits) {
         fruit.show();
-        //if (fruit.isShown) {
-        fruit.move();
-        //}
+        if (!gamePaused  && !gameOver) {
+          fruit.move();
+        }
       }
   
       for (let bomb of bombs) {
         bomb.show();
-        bomb.move();
+        if (!gamePaused && !gameOver) {
+          bomb.move();
+        }
       }
-    }
+    
 
     p5.noStroke();
 
@@ -383,9 +386,13 @@ const Game = ({ width, height, stopVideo }) => {
     p5.text(`Time: ${time}`, p5.width - 200, 50);
 
     p5.push();
-    p5.translate(p5.width / 2 - 100, 75);
+    p5.translate(p5.width / 2, 50);
     p5.imageMode(p5.CENTER);
-    p5.image(pauseButton, 0, 0, 50, 50);
+    if (!gamePaused && !gameOver){
+      p5.image(pauseButton, 0, 0, 50, 50);
+    }else{
+      p5.image(playButton, 0, 0, 50, 50)
+    }
     p5.pop();
 
     // p5.rect(0, 0, lBoundary, p5.height-5);
@@ -395,7 +402,7 @@ const Game = ({ width, height, stopVideo }) => {
   return (
     <>
       {/* <h1 style={{ textAlign: 'center' }} >Time: {time}</h1> */}
-      {calibrated.keypoints && isGameStarted && !gameOver ? (
+      {calibrated.keypoints && isGameStarted ? (
         <>
           <Sketch preload={preload} setup={setup} draw={draw} />
         </>
