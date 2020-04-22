@@ -7,6 +7,8 @@ const rofandi = '/assets/photo/Rofandi.jpg';
 const logo = '/assets/fruits/favicon.png';
 
 function About(){
+  const hover = new Audio("/assets/audio/hover.mp3");
+  const click = new Audio("/assets/audio/click.mp3");
 
     return(
         <div className="BodyAbout">
@@ -77,7 +79,7 @@ function About(){
             </div>
 
             <div className="HomeButton">
-                <Link to="/"><div className="btn btn-danger"><h4>Back To Home</h4></div></Link>
+                <Link to="/" onClick={() => click.play()} onMouseEnter={() => hover.play()} ><div className="btn btn-danger"><h4>Back To Home</h4></div></Link>
             </div>
 
             <div className="Footer">

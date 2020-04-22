@@ -11,3 +11,4 @@ export const PAUSE_GAME = 'PAUSE_GAME';
 export const RESUME_GAME = 'RESUME_GAME';
 export const FETCH_SCORE = 'FETCH_SCORE';
 export const SUBMIT_SCORE = 'SUBMIT_SCORE';
+export const SAVE_NAME = 'SAVE_NAME';

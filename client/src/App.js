@@ -22,11 +22,6 @@ const routes = [
     children: <Mode />
   },
   {
-    path: '/game',
-    exact: true,
-    children: <Camera />
-  },
-  {
     path: '/about',
     exact: true,
     children: <About />
@@ -35,7 +30,16 @@ const routes = [
     path: '/leaderboard',
     exact: true,
     children: <Leaderboard />
-  }
+  },
+  {
+    path: '/game',
+    exact: true,
+    children: <Camera />
+  },
+  {
+    path: '/game/:difficulty',
+    children: <Camera />
+  },
 ];
 
 function App() {
@@ -50,7 +54,6 @@ function App() {
           })}
         </Switch>
       </Router>
-      {/* <Camera /> */}
     </>    
   );
 }
