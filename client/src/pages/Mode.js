@@ -56,7 +56,7 @@ function Mode() {
             ></input>
           )}
           {!playerName && (
-            <button className="btn btn-danger mr-5" onClick={() => dispatch(saveName(input))}>
+            <button style={{ marginLeft: '10px', paddingBottom: '4.5px'}} className="btn-danger mr-5" onClick={() => dispatch(saveName(input))}>
               Submit
             </button>
           )}

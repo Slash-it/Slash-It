@@ -25,3 +25,11 @@ body {
   -webkit-transform: scaleX(-1);
   display: none !important;
 }
+
+.loading{
+  text-align: center;
+  margin: 0 auto;
+  /* position: absolute;
+  top: 0%;
+  left: 30%; */
+}

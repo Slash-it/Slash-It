@@ -213,10 +213,10 @@ class PoseNet extends Component {
   }
 
   render() {
-    const loading = this.state.loading ? <div>Loading....</div> : null;
+    const loading = this.state.loading ? <img src="/assets/loading.gif" alt="" />: null;
     return (
       <div className="centered">
-        <div>{loading}</div>
+        <div className="loading center" >{loading}</div>
         <div>
           <video id="videoNoShow" playsInline ref={this.getVideo} />
           <canvas className="webcam" ref={this.getCanvas} />

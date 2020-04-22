@@ -35,7 +35,7 @@ function Home() {
               style={{ cursor: "pointer" }}
               onClick={() => {
                 click.play();
-                setLeaderboardVisible(true);
+                history.push('/leaderboard');
               }}
               onMouseEnter={() => hover.play()}
             >

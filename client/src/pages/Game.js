@@ -22,6 +22,7 @@ import {
 } from "../store/actions/keypoints";
 import { showFloatingScore } from "../store/actions/floatingScores";
 import { useParams } from "react-router-dom";
+const gameOverSound = new Audio('/assets/audio/gameOver.mp3');
 
 const music = new Audio("/assets/audio/GameBg.mp3");
 const squish = new Audio("/assets/audio/squish.mp3");
@@ -35,9 +36,9 @@ let playButton;
 
 const Game = ({ width, height, stopVideo }) => {
   const dispatch = useDispatch();
-  const { mode } = useParams();
+  const { difficulty } = useParams();
   const [fruits, setFruits] = useState([]);
-  const [time, setTime] = useState(20);
+  const [time, setTime] = useState(10);
   const [score, setScore] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -46,7 +47,7 @@ const Game = ({ width, height, stopVideo }) => {
   const [bombs, setBombs] = useState([]);
   const [lBoundary, setLBoundary] = useState(0);
   const [rBoundary, setRBoundary] = useState(0);
-  const [gameMode, setGameMode] = useState(mode === 'easy' ? 0 : mode === 'medium' ? 1 : 2);
+  const [gameMode, setGameMode] = useState(difficulty === 'easy' ? 0 : difficulty === 'medium' ? 1 : 2);
   const [gameConfig, setGameConfig] = useState([
     {
       fruitTriggerConstant: 0.98,
@@ -73,6 +74,10 @@ const Game = ({ width, height, stopVideo }) => {
   const isGameStarted = useSelector((state) => state.keypoint.isGameStarted);
   const fruitImages = useSelector((state) => state.item.fruits);
   const gamePaused = useSelector((state) => state.keypoint.gamePaused);
+
+  const getScore = () => {
+    return score;
+  };
 
   useEffect(() => {
     music.addEventListener("ended", function () {
@@ -126,6 +131,7 @@ const Game = ({ width, height, stopVideo }) => {
         ) {
           dispatch(startResumeCounter(true));
           setTime(timerPaused);
+          music.play();
         } else if (
           collideCircle(
             rightHandKeypoints.x,
@@ -138,6 +144,7 @@ const Game = ({ width, height, stopVideo }) => {
         ) {
           dispatch(startResumeCounter(true));
           setTime(timerPaused);
+          music.play();
         }
       }
 
@@ -158,6 +165,7 @@ const Game = ({ width, height, stopVideo }) => {
             timerId.current = null;
             setTimerPaused(time);
             setIsTimerOn(false);
+            music.pause();
           }, 4000)
         }
 
@@ -220,6 +228,7 @@ const Game = ({ width, height, stopVideo }) => {
             timerId.current = null;
             setTimerPaused(time);
             setIsTimerOn(false);
+            music.pause();
           }, 4000);
         }
 
@@ -269,7 +278,15 @@ const Game = ({ width, height, stopVideo }) => {
     }
 
     if (time <= 0) {
+      music.pause();
+      music.currentTime = 0;
+      gameOverSound.play();
+      setTimeout(() => {
+        gameOverSound.pause();
+        gameOverSound.currentTime = 0;
+      }, 1000);
       setGameOver(true);
+      dispatch(gameStart(false));
       clearInterval(timerId.current);
     }
   }, [
@@ -414,7 +431,7 @@ const Game = ({ width, height, stopVideo }) => {
         </>
       ) : null}
       <FloatingScores />
-      {gameOver && <GameOver stopVideo={stopVideo} />}
+      {gameOver && <GameOver stopVideo={stopVideo} getScore={getScore} />}
       <PauseCounter />
       <PauseAndResume />
     </>
