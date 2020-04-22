@@ -2,7 +2,6 @@ import React from "react";
 import "../page.css";
 import { useHistory } from "react-router-dom";
 import HowToPlay from "../components/HowToPlay";
-import Leaderboard from "../components/Leaderboard";
 const strawberry = "/assets/fruits/Strawberry.png";
 const grapes = "/assets/fruits/Grape.png";
 const banana = "/assets/fruits/Banana.png";
@@ -17,7 +16,6 @@ const click = new Audio("/assets/audio/click.mp3");
 function Home() {
   const history = useHistory();
   const [howToPlayVisible, setHowToPlayVisible] = React.useState(false);
-  const [leaderboardVisible, setLeaderboardVisible] = React.useState(false);
   return (
     <div className="Body">
       {/* <img src={strawberry} className="strawberry rotate" alt="fruit" /> */}
@@ -36,7 +34,7 @@ function Home() {
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   click.play();
-                  setLeaderboardVisible(true);
+                  history.push("/leaderboard")
                 }}
                 onMouseEnter={() => hover.play()}
               >
@@ -88,11 +86,6 @@ function Home() {
       <div>
         {howToPlayVisible && (
           <HowToPlay close={() => setHowToPlayVisible(false)} />
-        )}
-      </div>
-      <div>
-        {leaderboardVisible && (
-          <Leaderboard close={() => setLeaderboardVisible(false)} />
         )}
       </div>
     </div>
