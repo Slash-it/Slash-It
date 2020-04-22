@@ -25,23 +25,10 @@ function Home() {
         <div className="zoomIn">
           <h3>Welcome to Punch Frenzy!</h3>
           {/* <img src="/assets/HomeLogo.png" height='300px' width='auto' alt="" /> */}
-          <div className="d-flex row ml-2">
-          <div className="btn btn-danger mr-5 ml-5">
-            <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/about')}>About</h4>
-          </div>
-          <div className="btn btn-danger mr-5 ">
-            <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/mode')}>Play Now</h4>
-          </div>
-          <div className="btn btn-danger">
-            <h4
-              style={{ cursor: "pointer" }}
-              onClick={() => setHowToPlayVisible(true)}
-            >
-              How To Play
-            </h4>
-          </div>
-          <div className="pl-2 d-inline-block">
-          <div className="btn btn-danger">
+
+          <div className="d-flex row ml-1 mb-4">
+
+          <div className="btn btn-danger mr-5">
           <h4
             style={{ cursor: "pointer" }}
             onClick={() => setLeaderboardVisible(true)}
@@ -49,21 +36,27 @@ function Home() {
             Leaderboard
           </h4>
         </div>
+
+        <div className="btn btn-danger mr-5">
+            <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/about')}>About</h4>
+          </div>
+
+          <div className="btn btn-danger mr-1">
+            <h4
+              style={{ cursor: "pointer" }}
+              onClick={() => setHowToPlayVisible(true)}
+            >
+              How To Play
+            </h4>
+          </div>
+          </div>
+
+        <div className="btn btn-danger ml-2 ">
+            <h4 style={{ cursor: 'pointer' }} onClick={() => history.push('/mode')}>Play Now</h4>
         </div>
 
-          <div className="pl-2 d-inline-block">
-            <div className="btn btn-danger">
-              <h4
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push("/mode")}
-              >
-                Play Now
-              </h4>
-            </div>
-          </div>
-          </div>
         </div>
-      </div>
+          </div>
       <img src={watermelon} className="watermelon rotate" alt="fruit" />
       <img src={orange} className="strawberry2 rotatereverse" alt="fruit" />
       <img src={apple} className="apple rotatereverse" alt="fruit" />
