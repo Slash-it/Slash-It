@@ -4,17 +4,20 @@ import './style/HowToPlay.css'
 const HowToPlay = ({ close }) => {
     return <>
         <div className="howtoplay">
-            <ol>HOW TO PLAY</ol>
-            <ol>1. Press Play Now button</ol>
-            <ol>2. Input your username and choose difficulty level</ol>
-            <ol>3. Press allow when asked for camera access</ol>
-            <ol>4. Step back to calibrate your body</ol>
-            <ol>5. Press pause icon if you want to pause</ol>
-            <ol>6. Hit as many fruits as you can with your arm! (+100 score each)</ol>
-            <ol>7. Be careful not to hit bomb! (-100 score each)</ol>
-            <ol>8. Press Replay to play again</ol>
-            <ol>9. Press Submit to save score to leaderboard</ol>
-            <button type="button" onClick={close}>BACK</button>
+            <div className="textcontainer">
+            <h3>HOW TO PLAY</h3>
+            <br></br>
+            <h4 className="htp">1. Press Play Now button</h4>
+            <h4 className="htp">2. Input your username and choose difficulty level</h4>
+            <h4 className="htp">3. Press allow when asked for camera access</h4>
+            <h4 className="htp">4. Step back to calibrate your body</h4>
+            <h4 className="htp">5. Press pause icon if you want to pause</h4>
+            <h4 className="htp">6. Hit fruits with your arm! (+100 score each)</h4>
+            <h4 className="htp">7. Be careful not to hit bomb! (-100 score each)</h4>
+            <h4 className="htp">8. Press Replay to play again</h4>
+            <h4 className="htp">9. Press Submit to save score to leaderboard</h4>
+            <button type="button" className="btn btn-danger" onClick={close}><h4>Back</h4></button>
+            </div>
         </div>
     </>
 }
