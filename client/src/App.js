@@ -21,15 +21,19 @@ const routes = [
     children: <Mode />
   },
   {
+    path: '/about',
+    exact: true,
+    children: <About />
+  },
+  {
     path: '/game',
     exact: true,
     children: <Camera />
   },
   {
-    path: '/about',
-    exact: true,
-    children: <About />
-  }
+    path: '/game/:difficulty',
+    children: <Camera />
+  },
 ];
 
 function App() {

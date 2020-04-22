@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../page.css";
 import { useHistory } from "react-router-dom";
 import HowToPlay from "../components/HowToPlay";
@@ -11,10 +11,11 @@ const watermelon = "./assets/fruits/WaterMelon.png";
 const apple = "./assets/fruits/Apple.png";
 const pear = "./assets/fruits/Pear.png";
 
-const hover = new Audio("/assets/audio/hover.mp3");
-const click = new Audio("/assets/audio/click.mp3");
 
 function Home() {
+  const hover = new Audio("/assets/audio/hover.mp3");
+  const click = new Audio("/assets/audio/click.mp3");
+
   const history = useHistory();
   const [howToPlayVisible, setHowToPlayVisible] = React.useState(false);
   const [leaderboardVisible, setLeaderboardVisible] = React.useState(false);
@@ -31,53 +32,53 @@ function Home() {
           {/* <img src="/assets/HomeLogo.png" height='300px' width='auto' alt="" /> */}
 
           <div className="d-flex row ml-1 mb-4">
-            <div className="btn btn-danger mr-5">
-              <h4
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  click.play();
-                  setLeaderboardVisible(true);
-                }}
-                onMouseEnter={() => hover.play()}
-              >
-                Leaderboard
-              </h4>
-            </div>
-
-            <div className="btn btn-danger mr-5">
-              <h4
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push("/about")}
-              >
-                About
-              </h4>
-            </div>
-
-            <div className="btn btn-danger mr-1">
-              <h4
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  click.play();
-                  setHowToPlayVisible(true);
-                }}
-                onMouseEnter={() => hover.play()}
-              >
-                How To Play
-              </h4>
-            </div>
-          </div>
-
-          <div className="btn btn-danger ml-2 ">
-            <h4
+            <div
+              className="btn btn-danger mr-5"
               style={{ cursor: "pointer" }}
               onClick={() => {
                 click.play();
-                history.push("/mode");
+                setLeaderboardVisible(true);
               }}
               onMouseEnter={() => hover.play()}
             >
-              Play Now
-            </h4>
+              <h4>Leaderboard</h4>
+            </div>
+
+            <div
+              className="btn btn-danger mr-5"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                click.play();
+                history.push("/about")
+              }}
+              onMouseEnter={() => hover.play()}
+            >
+              <h4>About</h4>
+            </div>
+
+            <div
+              className="btn btn-danger mr-1"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                click.play();
+                setHowToPlayVisible(true);
+              }}
+              onMouseEnter={() => hover.play()}
+            >
+              <h4>How To Play</h4>
+            </div>
+          </div>
+
+          <div
+            className="btn btn-danger ml-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              click.play();
+              history.push("/mode");
+            }}
+            onMouseEnter={() => hover.play()}
+          >
+            <h4>Play Now</h4>
           </div>
         </div>
       </div>

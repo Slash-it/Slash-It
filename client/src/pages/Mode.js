@@ -11,6 +11,9 @@ const pear = "./assets/fruits/Pear.png";
 
 
 function Mode(){
+  const hover = new Audio("/assets/audio/hover.mp3");
+  const click = new Audio("/assets/audio/click.mp3");
+
     return(
         <div className='BodyPages'>
             <div className='sectionTop d-flex row'>
@@ -37,9 +40,9 @@ function Mode(){
                     <br></br>
                     <h4>Choose The Level !</h4>
                     <div className='d-flex row'>
-                    <Link to='/game'><div className="btn btn-danger mr-5"><h4>Easy</h4></div></Link>
-                    <Link to='/game'><div className="btn btn-danger mr-5"><h4>Medium</h4></div></Link>
-                    <Link to='/game'><div className="btn btn-danger"><h4>Hard</h4></div></Link>
+                    <Link to='/game/easy' onClick={() => click.play()} onMouseEnter={() => hover.play()}><div className="btn btn-danger mr-5"><h4>Easy</h4></div></Link>
+                    <Link to='/game/medium' onClick={() => click.play()} onMouseEnter={() => hover.play()}><div className="btn btn-danger mr-5"><h4>Medium</h4></div></Link>
+                    <Link to='/game/hard' onClick={() => click.play()} onMouseEnter={() => hover.play()}><div className="btn btn-danger"><h4>Hard</h4></div></Link>
                     </div>
                 </div>
             </div>
