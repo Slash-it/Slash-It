@@ -249,6 +249,7 @@ h1{
   font-family: 'Samurai';
   font-size: 30px;
   color: white;
+  -webkit-text-stroke: 2px black;
 }
 
 h3{

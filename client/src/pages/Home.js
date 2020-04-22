@@ -21,6 +21,7 @@ function Home() {
       <img src={grapes} className="grapes rotatereverse" alt="fruit" />
       <img src={banana} className="banana rotate" alt="fruit" />
       <img src={orange} className="orange rotatereverse" alt="fruit" />
+      <img src={strawberry} className="strawberry rotate" alt="fruit" />
       <div className="center">
         <div className="zoomIn">
           <h3>Welcome to Punch Frenzy!</h3>
