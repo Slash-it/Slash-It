@@ -22,11 +22,11 @@ function GameOver (props) {
     };
 
     return (
-        <div className="gameOver">
+        <div className="gameOver center">
             <img src={gameOverIcon2} alt="Game Over" className="gameOver-logo" />
             <div className="button-container">
-                <button className="gameOverButton" onClick={() => submit()} >Submit</button>
-                <button className="gameOverButton" onClick={() => home()} >Home</button>
+                <button className="gameOverButton btn btn-warning" onClick={() => submit()} ><h4>Submit</h4></button>
+                <button className="gameOverButton btn btn-warning" onClick={() => home()} ><h4>Home</h4></button>
             </div>
         </div>
     )

@@ -930,3 +930,25 @@ h4{
   font-size: 13px;
   font-weight: 800;
 }
+
+/* LeaderBoard Page */
+
+.table-dark{
+  background-color: rgb(41, 41, 41);
+  border: solid 10px rgba(241, 241, 241, 0.8);
+  border-radius: 12px;
+  margin-right: 200px;
+}
+
+.thead{
+  font-family: 'Fredoka One';
+}
+
+.tdetail{
+  font-family: 'Courier';
+}
+
+.animatetable{
+  transform: translatey(0px);
+  animation: floatbox 6s ease-in-out infinite;
+}

@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Mode from './pages/Mode'
 import Camera from './pages/Camera';
 import About from './pages/About';
+import Leaderboard from './pages/Leaderboard'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/about',
     exact: true,
     children: <About />
+  },
+  {
+    path: '/leaderboard',
+    exact: true,
+    children: <Leaderboard />
   },
   {
     path: '/game',
@@ -48,7 +54,6 @@ function App() {
           })}
         </Switch>
       </Router>
-      {/* <Camera /> */}
     </>    
   );
 }
