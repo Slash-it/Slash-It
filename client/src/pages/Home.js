@@ -26,10 +26,10 @@ function Home() {
       <img src={strawberry} className="strawberry rotate" alt="fruit" />
       <div className="center">
         <div className="zoomIn">
-          <h3>Welcome to Punch Frenzy!</h3>
+          <h3>Welcome to Punching Frenzy!</h3>
           {/* <img src="/assets/HomeLogo.png" height='300px' width='auto' alt="" /> */}
 
-          <div className="d-flex row ml-1 mb-4">
+          <div className="d-flex justify-content-center row ml-1 mb-4">
             <div
               className="btn btn-danger mr-5"
               style={{ cursor: "pointer" }}
