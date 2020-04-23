@@ -70,7 +70,7 @@ function About(){
             <div id="card4">
             <img src={rofandi} alt="profpic"/>
             <div className="cardtext">
-            <h2>Rofandi Agung</h2>
+            <h2>Rofandi Gunawan</h2>
             <p>Fullstack Developer</p>
             <p>Interested in Web technologies like HTML5, CSS3, JavaScript, React, Vue, Jquery, etc.</p>
             </div>
