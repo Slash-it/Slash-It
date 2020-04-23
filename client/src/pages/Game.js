@@ -111,8 +111,8 @@ const Game = ({ width, height, stopVideo }) => {
     if (isGameStarted && !gameOver) {
       const lShoulder = findCoord("leftShoulder", keypoints);
       const rShoulder = findCoord("rightShoulder", keypoints);
-      setLBoundary(lShoulder.x - 120);
-      setRBoundary(rShoulder.x + 120);
+      setLBoundary(lShoulder.x - 140);
+      setRBoundary(rShoulder.x + 140);
       const { letfHandKeypoints, rightHandKeypoints } = createHandKeypoint(
         keypoints
       );
