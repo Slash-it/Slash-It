@@ -1,6 +1,6 @@
 class Fruit {
     constructor(p5, boundary, gravity, vyRandomFactor, fImgActive, fImgExplode) {
-        this.diameter = 80
+        this.diameter = 100
         this.x = Math.random() * ( (p5.width - 50) - (boundary + 50) ) + (boundary + 50)
         this.y = p5.height + this.diameter
         this.vy = Math.random() * (vyRandomFactor+3 - vyRandomFactor-3) + vyRandomFactor-3

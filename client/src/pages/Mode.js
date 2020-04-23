@@ -53,7 +53,7 @@ function Mode() {
               onChange={handleChange}
               placeholder="Username"
               required
-            ></input>
+            />
           )}
           {!playerName && (
             <button style={{ marginLeft: '10px', paddingBottom: '4.5px'}} className="btn-danger mr-5" onClick={() => dispatch(saveName(input))}>

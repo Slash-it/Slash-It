@@ -17,7 +17,6 @@ import PauseAndResume from '../components/PauseAndResume';
 import {
   gameStart,
   startPauseCounter,
-  resumeGame,
   startResumeCounter,
 } from "../store/actions/keypoints";
 import { showFloatingScore } from "../store/actions/floatingScores";

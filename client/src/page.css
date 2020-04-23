@@ -222,6 +222,14 @@
   transform: translate(-50%, -50%);
 }
 
+.home {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 .Body {
   background-image: url('/assets/fruits/background2.png') ;
   background-repeat: no-repeat;
