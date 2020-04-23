@@ -11,7 +11,7 @@ import {
   SAVE_NAME,
 } from './action-types'
 
-const url = 'http://localhost:3002/user';
+const url = 'https://sleepy-falls-43254.herokuapp.com';
 
 export const updateKeypoints = (keypoints) => ({
   type: UPDATE_KEYPOINTS,
@@ -49,7 +49,7 @@ export const resumeGame = () => ({
 });
 
 export const fetchScore = () => async (dispatch) => {
-  const response = await fetch(url, {
+  const response = await fetch(url+'/users', {
     mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export const submitScore = (name, score) => async (dispatch) => {
     score,
   };
 
-  const response = await fetch(url, {
+  const response = await fetch(url+'/users', {
     method: 'POST',
     mode: 'cors',
     headers: {

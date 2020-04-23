@@ -10,6 +10,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 app.use(routes);
 
-app.listen(PORT, () => console.log(`listening on port 3000`));
+// app.listen(PORT, () => console.log(`listening on port 3000`));
 
-// module.exports = app;
+module.exports = app;
