@@ -173,7 +173,7 @@ const Game = ({ width, height, stopVideo }) => {
             collideCircle(
               letfHandKeypoints.x,
               letfHandKeypoints.y,
-              100,
+              95,
               fruit.x,
               fruit.y,
               fruit.diameter
@@ -194,7 +194,7 @@ const Game = ({ width, height, stopVideo }) => {
             collideCircle(
               letfHandKeypoints.x,
               letfHandKeypoints.y,
-              80,
+              75,
               bomb.x,
               bomb.y,
               bomb.diameter
@@ -236,7 +236,7 @@ const Game = ({ width, height, stopVideo }) => {
             collideCircle(
               rightHandKeypoints.x,
               rightHandKeypoints.y,
-              100,
+              95,
               fruit.x,
               fruit.y,
               fruit.diameter
@@ -257,7 +257,7 @@ const Game = ({ width, height, stopVideo }) => {
             collideCircle(
               rightHandKeypoints.x,
               rightHandKeypoints.y,
-              80,
+              75,
               bomb.x,
               bomb.y,
               bomb.diameter
@@ -281,12 +281,12 @@ const Game = ({ width, height, stopVideo }) => {
       music.currentTime = 0;
       gameOverSound.play();
       setTimeout(() => {
-        gameOverSound.pause();
-        gameOverSound.currentTime = 0;
-      }, 1000);
+        gameOverSound.pause()
+      }, 2000)
       setGameOver(true);
       dispatch(gameStart(false));
       clearInterval(timerId.current);
+      setTime(60);
     }
   }, [
     keypoints,
