@@ -1,7 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const app = express()
 const router = require('./Router/router.js')
-const PORT = 3002
+const PORT = process.env.PORT || 3002
 const client = require('./Services/config')
 const cors = require('cors');
 const createUserCollection = require('./Helper/userCollection')
@@ -10,6 +11,7 @@ function initializeMongo(req,res,next){
     client.connect()
     .then(()=>{
         const db = client.db('Slash-It');
+        console.log(db);
         createUserCollection(db)
         req.db = db;
         next()

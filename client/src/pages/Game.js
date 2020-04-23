@@ -46,8 +46,8 @@ const Game = ({ width, height, stopVideo }) => {
   const [bombs, setBombs] = useState([]);
   const [lBoundary, setLBoundary] = useState(0);
   const [rBoundary, setRBoundary] = useState(0);
-  const [gameMode, setGameMode] = useState(difficulty === 'easy' ? 0 : difficulty === 'medium' ? 1 : 2);
-  const [gameConfig, setGameConfig] = useState([
+  const [gameMode] = useState(difficulty === 'easy' ? 0 : difficulty === 'medium' ? 1 : 2);
+  const [gameConfig] = useState([
     {
       fruitTriggerConstant: 0.98,
       bombTriggerConstant: 0.995,

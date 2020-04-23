@@ -66,7 +66,7 @@ function LeaderBoard() {
                 </table> 
                 <div className="button d-flex row ml-3">
                 <Link to="/" onMouseEnter={() => hover.play()} onClick={() => click.play()}><div className="btn btn-danger mr-5 ml-5"><h4>Back Home</h4></div></Link>
-                <Link to="/mode" onMouseEnter={() => hover.play()} onClick={() => click.play()} ><div className="btn btn-danger"><h4>Play Again</h4></div></Link>
+                <Link to="/mode" onMouseEnter={() => hover.play()} onClick={() => click.play()} ><div className="btn btn-danger"><h4>Play</h4></div></Link>
                 </div>
         </div>
       </div>
