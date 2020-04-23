@@ -37,7 +37,7 @@ const Game = ({ width, height, stopVideo }) => {
   const dispatch = useDispatch();
   const { difficulty } = useParams();
   const [fruits, setFruits] = useState([]);
-  const [time, setTime] = useState(10);
+  const [time, setTime] = useState(60);
   const [score, setScore] = useState(0);
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [gameOver, setGameOver] = useState(false);
